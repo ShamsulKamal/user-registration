@@ -1,0 +1,23 @@
+# Compiled source #
+###################
+*.class
+
+# Packages #
+############
+*.jar
+*.war
+*.ear
+
+# Maven #
+#########
+target
+
+# eclipse #
+###########
+.project
+.classpath
+
+# Logs and databases #
+######################
+*.log
+*.sql
