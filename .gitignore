@@ -21,3 +21,8 @@ target
 ######################
 *.log
 *.sql
+
+# Folder #
+##########
+target
+.settings
