@@ -8,9 +8,46 @@
     <form-beans>
     </form-beans>
 
+    <global-forwards />
+
     <action-mappings>
-        <action path="/home" forward="/views/home.jsp"/>
+        <action path="/home" forward="/views/home.jsp" />
+        
+        <!-- User module start -->
+        <action path="/user/create"
+            type="com.struts.registration.web.action.UserAction"
+            parameter="create">
+            <forward name="success" path="/views/user/create.jsp"/>
+        </action>
+        <action path="/user/save"
+            type="com.struts.registration.web.action.UserAction"
+            parameter="save">
+            <forward name="success" path="/views/user/list.jsp"/>
+        </action>
+        <action path="/user/edit"
+            type="com.struts.registration.web.action.UserAction"
+            parameter="edit">
+            <forward name="success" path="/views/user/edit.jsp"/>
+        </action>
+        <action path="/user/update"
+            type="com.struts.registration.web.action.UserAction"
+            parameter="update">
+            <forward name="success" path="/views/user/list.jsp"/>
+        </action>
+        <action path="/user/show"
+            type="com.struts.registration.web.action.UserAction"
+            parameter="show">
+            <forward name="success" path="/views/user/show.jsp"/>
+        </action>
+        <action path="/user/delete"
+            type="com.struts.registration.web.action.UserAction"
+            parameter="delete">
+            <forward name="success" path="/views/user/list.jsp"/>
+        </action>
+        <!-- User module end -->
     </action-mappings>
 
     <message-resources parameter="MessageResources" />
+
+    <!-- <plug-in className="" /> -->
 </struts-config>
