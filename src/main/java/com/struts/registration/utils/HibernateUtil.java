@@ -8,8 +8,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HibernateUtil {
+    private final Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
     private static final SessionFactory SESSION_FACTORY;
     private static final ServiceRegistry SERVICE_REGISTRY;
     private static final ThreadLocal<Session> localSession = new ThreadLocal<Session>();
@@ -47,5 +50,4 @@ public class HibernateUtil {
             session.close();
         }
     }
-
 }

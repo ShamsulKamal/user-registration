@@ -90,7 +90,6 @@
 <!--             <artifactId>commons-lang3</artifactId> -->
 <!--             <version>3.3.2</version> -->
 <!--         </dependency> -->
-    
         <!-- http://stackoverflow.com/questions/467879/hibernate-3-4-with-slf4j-and-log4j -->
         <dependency>
             <groupId>displaytag</groupId>

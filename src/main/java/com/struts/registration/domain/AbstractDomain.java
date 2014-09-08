@@ -15,5 +15,4 @@ public abstract class AbstractDomain implements Serializable {
         builder.setAppendTransients(true);
         return builder.toString();
     }
-
 }

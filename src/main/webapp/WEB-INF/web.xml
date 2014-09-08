@@ -16,6 +16,10 @@
             <param-name>config</param-name>
             <param-value>/WEB-INF/struts-config.xml</param-value>
         </init-param>
+        <init-param>
+            <param-name>daoFactoryClass</param-name>
+            <param-value>com.struts.registration.dao.DaoFactoryManager</param-value>
+        </init-param>
         <load-on-startup>0</load-on-startup>
     </servlet>
 
