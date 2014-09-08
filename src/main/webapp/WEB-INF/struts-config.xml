@@ -6,23 +6,27 @@
 
 <struts-config>
     <form-beans>
+        <form-bean name="userForm" type="com.struts.registration.web.form.UserForm" />
     </form-beans>
 
     <global-forwards />
 
     <action-mappings>
         <action path="/home" forward="/views/home.jsp" />
-        
         <!-- User module start -->
         <action path="/user/create"
             type="com.struts.registration.web.action.UserAction"
+            name="userForm"
+            scope="request"
             parameter="create">
             <forward name="success" path="/views/user/create.jsp"/>
         </action>
         <action path="/user/save"
             type="com.struts.registration.web.action.UserAction"
+            name="userForm"
+            scope="request"
             parameter="save">
-            <forward name="success" path="/views/user/list.jsp"/>
+            <forward name="success" path="/user/list.do"/>
         </action>
         <action path="/user/edit"
             type="com.struts.registration.web.action.UserAction"
@@ -32,7 +36,7 @@
         <action path="/user/update"
             type="com.struts.registration.web.action.UserAction"
             parameter="update">
-            <forward name="success" path="/views/user/list.jsp"/>
+            <forward name="success" path="/user/list.do"/>
         </action>
         <action path="/user/show"
             type="com.struts.registration.web.action.UserAction"
@@ -42,6 +46,11 @@
         <action path="/user/delete"
             type="com.struts.registration.web.action.UserAction"
             parameter="delete">
+            <forward name="success" path="/user/list.do"/>
+        </action>
+        <action path="/user/list"
+            type="com.struts.registration.web.action.UserAction"
+            parameter="list">
             <forward name="success" path="/views/user/list.jsp"/>
         </action>
         <!-- User module end -->
