@@ -14,19 +14,19 @@
     <action-mappings>
         <action path="/home" forward="/views/home.jsp" />
         <!-- User module start -->
-        <action path="/user/create"
+        <action path="/createUser"
             type="com.struts.registration.web.action.UserAction"
             name="userForm"
             scope="request"
             parameter="create">
             <forward name="success" path="/views/user/create.jsp"/>
         </action>
-        <action path="/user/save"
+        <action path="/saveUser"
             type="com.struts.registration.web.action.UserAction"
             name="userForm"
             scope="request"
             parameter="save">
-            <forward name="success" path="/user/list.do"/>
+            <forward name="success" path="/listUser.do"/>
         </action>
         <action path="/user/edit"
             type="com.struts.registration.web.action.UserAction"
@@ -38,8 +38,9 @@
             parameter="update">
             <forward name="success" path="/user/list.do"/>
         </action>
-        <action path="/user/show"
+        <action path="/showUser"
             type="com.struts.registration.web.action.UserAction"
+            name="userForm"
             parameter="show">
             <forward name="success" path="/views/user/show.jsp"/>
         </action>
@@ -48,7 +49,7 @@
             parameter="delete">
             <forward name="success" path="/user/list.do"/>
         </action>
-        <action path="/user/list"
+        <action path="/listUser"
             type="com.struts.registration.web.action.UserAction"
             parameter="list">
             <forward name="success" path="/views/user/list.jsp"/>
@@ -58,5 +59,4 @@
 
     <message-resources parameter="MessageResources" />
 
-    <!-- <plug-in className="" /> -->
 </struts-config>

@@ -12,7 +12,7 @@
 </head>
     <body>
         <html:errors />
-        <html:form action="/user/save" focus="firstName">
+        <html:form action="/saveUser" focus="firstName">
             <table border="0" width="100%">
                 <tr>
                     <th class="right">

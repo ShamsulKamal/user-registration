@@ -6,7 +6,7 @@
         <title>Welcome to User Registration System</title>
     </head>
     <body>
-        <html:link action="/user/list" >
+        <html:link action="/listUser" >
            List User
         </html:link>
     </body>
