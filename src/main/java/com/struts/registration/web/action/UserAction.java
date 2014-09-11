@@ -64,6 +64,15 @@ public class UserAction extends BaseAction {
 
     public ActionForward show(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
+
+        String id = request.getParameter("id");
+        UserDao userDao = getDaoFactory().getUserDao();
+        User user = userDao.findById(Long.valueOf(id));
+
+        UserForm userForm = (UserForm) form;
+        PropertyUtils.copyProperties(userForm, user);
+        request.setAttribute("bean", userForm);
+
         return mapping.findForward("success");
     }
 
