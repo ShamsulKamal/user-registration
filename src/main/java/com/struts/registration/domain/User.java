@@ -28,6 +28,8 @@ public class User extends AbstractDomain implements Identifiable {//, Auditable 
     private String lastName;
 //    private String email;
 //    private Date birthdate;
+    @Column(name = "UUID", nullable = false, length = 36, unique = true)
+    private String uuid;
 
     @Override
     public Long getId() {
@@ -98,6 +100,14 @@ public class User extends AbstractDomain implements Identifiable {//, Auditable 
         this.lastName = lastName;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
 //    public String getEmail() {
 //        return email;
 //    }
@@ -113,4 +123,9 @@ public class User extends AbstractDomain implements Identifiable {//, Auditable 
 //    public void setBirthdate(Date birthdate) {
 //        this.birthdate = birthdate;
 //    }
+
+    public Object getKey() {
+        return getUuid();
+    }
+
 }

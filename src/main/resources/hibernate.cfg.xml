@@ -25,8 +25,5 @@
 
         <mapping class="com.struts.registration.domain.User"/>
 
-<!--         <event type="post-insert"> -->
-<!--             <listener class="" /> -->
-<!--         </event> -->
     </session-factory>
 </hibernate-configuration>
