@@ -47,6 +47,7 @@ public class UserAction extends BaseAction {
 
         UserDao userDao = getUserDao();
         userDao.save(user);
+        logger.info(">>> user successfully created: " + "[" + user + "]");
 
         return mapping.findForward("success");
     }
@@ -65,7 +66,7 @@ public class UserAction extends BaseAction {
         User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
         PropertyUtils.copyProperties(user, userForm);
         UserDao userDao = getUserDao();
-        userDao.save(user);
+        userDao.update(user);
         return mapping.findForward("success");
     }
 
@@ -90,6 +91,4 @@ public class UserAction extends BaseAction {
         userDao.delete(user);
         return mapping.findForward("success");
     }
-
-
 }

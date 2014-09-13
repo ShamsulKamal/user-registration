@@ -3,6 +3,11 @@ package com.struts.registration.utils;
 import com.struts.registration.dao.DaoFactory;
 import com.struts.registration.exception.ApplicationException;
 
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ */
 public class DaoFactoryUtil {
     private DaoFactory daoFactory;
 

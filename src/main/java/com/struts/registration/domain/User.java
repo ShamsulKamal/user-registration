@@ -1,26 +1,37 @@
 package com.struts.registration.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="USER")
-public class User extends AbstractDomain implements Identifiable {//, Auditable {
+public class User extends AbstractDomain implements Identifiable, Auditable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID")
     private Long id;
-
-//    private Date createdDate;
-//    private String createdBy;
-//    private Date lastUpdated;
-//    private String lastUpdatedBy;
+    @Column(name = "UUID", nullable = false, length = 36, unique = true)
+    private String uuid;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="CREATEDDATE")
+    private Date createdDate;
+    @Column(name="CREATEDBY", length=50)
+    private String createdBy;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="LASTUPDATED")
+    private Date lastUpdated;
+    @Column(name="LASTUPDATEDBY")
+    private String lastUpdatedBy;
 
     @Column(name="FIRSTNAME")
     private String firstName;
@@ -28,8 +39,6 @@ public class User extends AbstractDomain implements Identifiable {//, Auditable 
     private String lastName;
 //    private String email;
 //    private Date birthdate;
-    @Column(name = "UUID", nullable = false, length = 36, unique = true)
-    private String uuid;
 
     @Override
     public Long getId() {
@@ -43,46 +52,46 @@ public class User extends AbstractDomain implements Identifiable {//, Auditable 
         this.id = id;
     }
 
-//    @Override
-//    public void setCreatedBy(String createdBy) {
-//        this.createdBy = createdBy;
-//    }
-//
-//    @Override
-//    public String getCreatedBy() {
-//        return createdBy;
-//    }
-//
-//    @Override
-//    public void setCreatedDate(Date createdDate) {
-//        this.createdDate = createdDate;
-//    }
-//
-//    @Override
-//    public Date getCreatedDate() {
-//        return createdDate;
-//    }
-//
-//    @Override
-//    public void setLastUpdatedBy(String updatedBy) {
-//        this.lastUpdatedBy = updatedBy;
-//
-//    }
-//
-//    @Override
-//    public String getLastUpdatedBy() {
-//        return lastUpdatedBy;
-//    }
-//
-//    @Override
-//    public void setLastUpdated(Date updateDate) {
-//        this.lastUpdated = updateDate;
-//    }
-//
-//    @Override
-//    public Date getLastUpdated() {
-//        return lastUpdated;
-//    }
+    @Override
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    @Override
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    @Override
+    public void setLastUpdatedBy(String updatedBy) {
+        this.lastUpdatedBy = updatedBy;
+
+    }
+
+    @Override
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdated(Date updateDate) {
+        this.lastUpdated = updateDate;
+    }
+
+    @Override
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
 
     public String getFirstName() {
         return firstName;

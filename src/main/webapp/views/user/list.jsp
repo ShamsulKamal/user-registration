@@ -20,6 +20,11 @@
     </div>
     <display:table name="users" pagesize="10" decorator="com.struts.registration.web.decorator.UserDecorator">
         <display:column property="firstName"/>
+        <display:column property="lastName"/>
+        <display:column property="createdBy"/>
+        <display:column property="createdDate"/>
+        <display:column property="lastUpdatedBy"/>
+        <display:column property="lastUpdated"/>
     </display:table>
 </body>
 </html>

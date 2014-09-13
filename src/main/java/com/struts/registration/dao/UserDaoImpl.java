@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
@@ -51,13 +50,33 @@ public class UserDaoImpl implements UserDao {
         Transaction txn = null;
         try {
             txn = session.beginTransaction();
-            session.saveOrUpdate(entity);
+            session.save(entity);
             txn.commit();
         } catch (Exception e) {
             if (txn != null) {
                 txn.rollback();
             }
             throw new ApplicationException("User " + entity.getFirstName() + " unable to save", e);
+        }
+        finally {
+            HibernateUtil.closeSession();
+        }
+        return entity;
+    }
+
+    @Override
+    public User update(User entity) {
+        Session session = HibernateUtil.currentSession();
+        Transaction txn = null;
+        try {
+            txn = session.beginTransaction();
+            session.update(entity);
+            txn.commit();
+        } catch (Exception e) {
+            if (txn != null) {
+                txn.rollback();
+            }
+            throw new ApplicationException("User " + entity.getFirstName() + " unable to update", e);
         }
         finally {
             HibernateUtil.closeSession();
@@ -88,11 +107,11 @@ public class UserDaoImpl implements UserDao {
     public User findByIdAndUuid(Long id, String uuid) {
         String sql = "from User where id = :id and uuid = :uuid";
         Session session = HibernateUtil.currentSession();
-        Query query = session.createQuery(sql);
-        query.setParameter("id", id);
-        query.setParameter("uuid", uuid);
-        User user = null;
-        user = (User) query.uniqueResult();
+        User user = (User) session.createQuery(sql)
+            .setParameter("id", id)
+            .setParameter("uuid", uuid)
+            .uniqueResult();
+
         if (user == null) {
             throw new ApplicationException("User with id " + id + " and uuid " + uuid + " can't be found");
         }

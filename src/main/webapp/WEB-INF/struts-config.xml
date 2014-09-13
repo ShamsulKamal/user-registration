@@ -62,4 +62,6 @@
 
     <message-resources parameter="MessageResources" />
 
+    <!--plug-in className=""/-->
+
 </struts-config>

@@ -8,6 +8,11 @@ import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.metamodel.source.MetadataImplementor;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
 
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ */
 public class UserIntegrator implements Integrator {
 
     @Override
@@ -19,6 +24,7 @@ public class UserIntegrator implements Integrator {
                     SessionFactoryServiceRegistry serviceRegistry) {
         EventListenerRegistry eventListenerRegistry = serviceRegistry.getService(EventListenerRegistry.class);
         eventListenerRegistry.appendListeners(EventType.PRE_INSERT, new UserEventListener());
+        eventListenerRegistry.appendListeners(EventType.PRE_UPDATE, new UserEventListener());
     }
 
     @Override
