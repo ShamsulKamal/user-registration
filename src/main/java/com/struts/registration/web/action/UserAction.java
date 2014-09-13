@@ -26,7 +26,7 @@ public class UserAction extends BaseAction {
 
     public ActionForward list(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
-        UserDao userDao = getDaoFactory().getUserDao();
+        UserDao userDao = getUserDao();
         List<User> users = userDao.findAll();
         request.setAttribute("users", users);
         return mapping.findForward("success");
@@ -34,7 +34,6 @@ public class UserAction extends BaseAction {
 
     public ActionForward create(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
-
         return mapping.findForward("success");
     }
 
@@ -46,7 +45,7 @@ public class UserAction extends BaseAction {
         User user = new User();
         PropertyUtils.copyProperties(user, userForm);
 
-        UserDao userDao = getDaoFactory().getUserDao();
+        UserDao userDao = getUserDao();
         userDao.save(user);
 
         return mapping.findForward("success");
@@ -54,11 +53,19 @@ public class UserAction extends BaseAction {
 
     public ActionForward edit(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
+        UserForm userForm = (UserForm) form;
+        User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
+        PropertyUtils.copyProperties(userForm, user);
         return mapping.findForward("success");
     }
 
     public ActionForward update(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
+        UserForm userForm = (UserForm) form;
+        User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
+        PropertyUtils.copyProperties(user, userForm);
+        UserDao userDao = getUserDao();
+        userDao.save(user);
         return mapping.findForward("success");
     }
 
@@ -66,19 +73,23 @@ public class UserAction extends BaseAction {
                     HttpServletResponse response) throws Exception {
 
         String id = request.getParameter("id");
-        UserDao userDao = getDaoFactory().getUserDao();
+        UserDao userDao = getUserDao();
         User user = userDao.findById(Long.valueOf(id));
 
         UserForm userForm = (UserForm) form;
         PropertyUtils.copyProperties(userForm, user);
-        request.setAttribute("bean", userForm);
 
         return mapping.findForward("success");
     }
 
     public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
+        UserForm userForm = (UserForm) form;
+        UserDao userDao = getUserDao();
+        User user = userDao.findById(userForm.getId());
+        userDao.delete(user);
         return mapping.findForward("success");
     }
+
 
 }

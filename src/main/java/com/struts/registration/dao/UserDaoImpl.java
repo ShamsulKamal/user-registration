@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
@@ -13,6 +14,11 @@ import com.struts.registration.domain.User;
 import com.struts.registration.exception.ApplicationException;
 import com.struts.registration.utils.HibernateUtil;
 
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ */
 public class UserDaoImpl implements UserDao {
     private final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
@@ -25,7 +31,8 @@ public class UserDaoImpl implements UserDao {
         } catch (HibernateException e) {
             logger.error("No User found with id " + id, e);
             throw new ApplicationException("No User found with id " + id, e);
-        } finally {
+        }
+        finally {
             HibernateUtil.closeSession();
         }
         return user;
@@ -38,21 +45,21 @@ public class UserDaoImpl implements UserDao {
         return criteria.list();
     }
 
-
     @Override
     public User save(User entity) {
         Session session = HibernateUtil.currentSession();
         Transaction txn = null;
         try {
             txn = session.beginTransaction();
-            session.save(entity);
+            session.saveOrUpdate(entity);
             txn.commit();
         } catch (Exception e) {
             if (txn != null) {
                 txn.rollback();
             }
             throw new ApplicationException("User " + entity.getFirstName() + " unable to save", e);
-        } finally {
+        }
+        finally {
             HibernateUtil.closeSession();
         }
         return entity;
@@ -71,8 +78,24 @@ public class UserDaoImpl implements UserDao {
                 txn.rollback();
             }
             throw new ApplicationException("User " + entity.getFirstName() + " unable to delete", e);
-        } finally {
+        }
+        finally {
             HibernateUtil.closeSession();
         }
+    }
+
+    @Override
+    public User findByIdAndUuid(Long id, String uuid) {
+        String sql = "from User where id = :id and uuid = :uuid";
+        Session session = HibernateUtil.currentSession();
+        Query query = session.createQuery(sql);
+        query.setParameter("id", id);
+        query.setParameter("uuid", uuid);
+        User user = null;
+        user = (User) query.uniqueResult();
+        if (user == null) {
+            throw new ApplicationException("User with id " + id + " and uuid " + uuid + " can't be found");
+        }
+        return user;
     }
 }

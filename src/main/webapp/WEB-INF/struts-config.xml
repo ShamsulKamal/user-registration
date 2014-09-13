@@ -28,15 +28,17 @@
             parameter="save">
             <forward name="success" path="/listUser.do"/>
         </action>
-        <action path="/user/edit"
+        <action path="/editUser"
             type="com.struts.registration.web.action.UserAction"
+            name="userForm"
             parameter="edit">
             <forward name="success" path="/views/user/edit.jsp"/>
         </action>
-        <action path="/user/update"
+        <action path="/updateUser"
             type="com.struts.registration.web.action.UserAction"
+            name="userForm"
             parameter="update">
-            <forward name="success" path="/user/list.do"/>
+            <forward name="success" path="/listUser.do"/>
         </action>
         <action path="/showUser"
             type="com.struts.registration.web.action.UserAction"
@@ -44,10 +46,11 @@
             parameter="show">
             <forward name="success" path="/views/user/show.jsp"/>
         </action>
-        <action path="/user/delete"
+        <action path="/deleteUser"
             type="com.struts.registration.web.action.UserAction"
+            name="userForm"
             parameter="delete">
-            <forward name="success" path="/user/list.do"/>
+            <forward name="success" path="/listUser.do"/>
         </action>
         <action path="/listUser"
             type="com.struts.registration.web.action.UserAction"

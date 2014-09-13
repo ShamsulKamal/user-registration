@@ -8,26 +8,59 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><bean:message key="user.show"/></title>
+        
+        <script type="text/javascript">
+        function editUser() {
+        	document.forms[0].action='editUser.do';
+        	document.forms[0].submit();
+        }
+        function deleteUser() {
+        	document.forms[0].action='deleteUser.do';
+        	document.forms[0].submit();
+        }
+        function listUser() {
+        	document.forms[0].action='listUser.do';
+        	document.forms[0].submit();
+        }
+        </script>
     </head>
     <body>
-        <table border="0" width="100%">
-            <tr>
-                <th class="right">
-                    <bean:message key="user.firstName" />
-                </th>
-                <td class="left">
-<%--                     <html:text size="50" readonly="true" property='<c:out value="${bean.firstName}"/>' /> --%>
-<html-el:text property="firstName" size="3" readonly="${bean.firstName}" maxlength="5"/>
-                </td>
-            </tr>
-<!--             <tr> -->
-<!--                 <th class="right"> -->
-<%--                     <bean:message key="user.lastName" /> --%>
-<!--                 </th> -->
-<!--                 <td class="left"> -->
-<%--                     <html:text property="lastName" size="50" /> --%>
-<!--                 </td> -->
-<!--             </tr> -->
-        </table>
+        <html:form>
+            <html-el:hidden property="id"/>
+            <html-el:hidden property="uuid"/>
+            <table border="0" width="100%">
+                <tr>
+                    <th>
+                        <bean:message key="user.firstName" />
+                    </th>
+                    <td >
+                        <html-el:text property="firstName" size="40" readonly="true" maxlength="50" titleKey="user.firstName" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <bean:message key="user.lastName" />
+                    </th>
+                    <td>
+                        <html-el:text property="lastName" size="40" readonly="true" maxlength="50" titleKey="user.lastName" />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" width="100%">
+                <tr>
+                    <td>
+                        <html:submit onclick="editUser()">
+                            <bean:message key="button.edit" />
+                        </html:submit>
+                        <html:submit onclick="deleteUser()">
+                            <bean:message key="button.delete" />
+                        </html:submit>
+                        <html:submit onclick="listUser()">
+                            <bean:message key="button.back" />
+                        </html:submit>
+                    </td>
+                </tr>
+            </table>
+        </html:form>
     </body>
 </html>
