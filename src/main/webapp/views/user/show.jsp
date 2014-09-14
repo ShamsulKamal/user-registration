@@ -10,18 +10,18 @@
         <title><bean:message key="user.show"/></title>
         
         <script type="text/javascript">
-        function editUser() {
-        	document.forms[0].action='editUser.do';
-        	document.forms[0].submit();
-        }
-        function deleteUser() {
-        	document.forms[0].action='deleteUser.do';
-        	document.forms[0].submit();
-        }
-        function listUser() {
-        	document.forms[0].action='listUser.do';
-        	document.forms[0].submit();
-        }
+            function editUser() {
+                document.forms[0].action='editUser.do';
+                document.forms[0].submit();
+            }
+            function deleteUser() {
+                document.forms[0].action='deleteUser.do';
+                document.forms[0].submit();
+            }
+            function listUser() {
+                document.forms[0].action='listUser.do';
+                document.forms[0].submit();
+            }
         </script>
     </head>
     <body>
@@ -31,18 +31,26 @@
             <table border="0" width="100%">
                 <tr>
                     <th>
-                        <bean:message key="user.firstName" />
+                        <bean:message key="user.username" />
                     </th>
                     <td >
-                        <html-el:text property="firstName" size="40" readonly="true" maxlength="50" titleKey="user.firstName" />
+                        <html-el:text property="username" size="40" readonly="true" maxlength="50" titleKey="user.username" />
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        <bean:message key="user.lastName" />
+                        <bean:message key="user.password" />
                     </th>
                     <td>
-                        <html-el:text property="lastName" size="40" readonly="true" maxlength="50" titleKey="user.lastName" />
+                        <html-el:password property="password" size="40" readonly="true" maxlength="50" titleKey="user.password" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <bean:message key="user.email" />
+                    </th>
+                    <td>
+                        <html-el:text property="email" size="40" readonly="true" maxlength="50" titleKey="user.email" />
                     </td>
                 </tr>
             </table>

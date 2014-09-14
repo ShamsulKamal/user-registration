@@ -42,8 +42,9 @@ public class UserTest {
     public void test1Save() {
         println("test1Save");
         User user = new User();
-        user.setFirstName("shamsul");
-        user.setLastName("kamal");
+        user.setUsername("admin");
+        user.setPassword("password");
+        user.setEmail("admin@mail.com");
         daoFactory.getUserDao().save(user);
 
         assertEquals("creator", user.getCreatedBy());
@@ -62,10 +63,10 @@ public class UserTest {
         println("test3Update");
         User user = daoFactory.getUserDao().findById(1L);
         assertNotNull("User not found", user);
-        user.setFirstName("Shamsul");
+        user.setPassword("password123");
         daoFactory.getUserDao().save(user);
 
-        assertEquals("Shamsul", user.getFirstName());
+        assertEquals("password123", user.getPassword());
         assertEquals("updater", user.getLastUpdatedBy());
     }
 

@@ -6,9 +6,9 @@ import com.struts.registration.domain.User;
 
 public class UserDecorator extends TableDecorator {
 
-    public String getFirstName() {
+    public String getUsername() {
         User user = (User) getCurrentRowObject();
 
-        return "<a href=\"showUser.do?id=" + user.getId() + "\">" + user.getFirstName() + "</a>";
+        return "<a href=\"showUser.do?id=" + user.getId() + "\">" + user.getUsername() + "</a>";
     }
 }

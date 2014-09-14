@@ -40,7 +40,7 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
             Session session = HibernateUtil.currentSession();
             entity = (T) session.get(persistentClass, id);
         } catch (HibernateException e) {
-             logger.error("No User found with id " + id, e);
+            logger.error("No User found with id " + id, e);
             throw new ApplicationException("No User found with id " + id, e);
         }
         finally {
@@ -63,7 +63,6 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
             session.saveOrUpdate(entity);
             txn.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             if (txn != null) {
                 txn.rollback();
             }

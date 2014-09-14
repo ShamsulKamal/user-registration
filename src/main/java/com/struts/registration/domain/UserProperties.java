@@ -1,6 +1,5 @@
 package com.struts.registration.domain;
 
-
 public interface UserProperties {
     String ID = "id";
     String UUID = "uuid";
@@ -8,6 +7,8 @@ public interface UserProperties {
     String CREATEDBY = "createdBy";
     String LASTUPDATED = "lastUpdated";
     String LASTUPDATEDBY = "lastUpdatedBy";
-    String FIRSTNAME = "firstName";
-    String LASTNAME = "lastName";
+    String USERNAME = "username";
+    String PASSWORD = "password";
+    String EMAIL = "email";
+    String BIRTHDATE = "birthdate";
 }

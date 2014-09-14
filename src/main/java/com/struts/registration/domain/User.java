@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="USER")
@@ -33,12 +37,18 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     @Column(name="LASTUPDATEDBY")
     private String lastUpdatedBy;
 
-    @Column(name="FIRSTNAME")
-    private String firstName;
-    @Column(name="LASTNAME")
-    private String lastName;
-//    private String email;
-//    private Date birthdate;
+    @Column(name = "USERNAME", nullable = false, length = 50, unique = true)
+    private String username;
+    @Column(name="PASSWORD")
+    @NotNull
+    private String password;
+    @Column(name = "EMAIL", length = 100)
+    @Email
+    private String email;
+    @Column(name = "BDATE")
+    @Type(type = "date")
+//    @NotNull
+    private Date birthdate;
 
     @Override
     public Long getId() {
@@ -93,20 +103,20 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
         return lastUpdated;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUuid() {
@@ -117,24 +127,23 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
         this.uuid = uuid;
     }
 
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public Date getBirthdate() {
-//        return birthdate;
-//    }
-//
-//    public void setBirthdate(Date birthdate) {
-//        this.birthdate = birthdate;
-//    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
 
     public Object getKey() {
         return getUuid();
     }
-
 }

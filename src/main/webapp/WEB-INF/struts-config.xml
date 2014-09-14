@@ -16,40 +16,45 @@
         <!-- User module start -->
         <action path="/createUser"
             type="com.struts.registration.web.action.UserAction"
+            parameter="create"
             name="userForm"
             scope="request"
-            parameter="create">
+            validate="false">
             <forward name="success" path="/views/user/create.jsp"/>
         </action>
         <action path="/saveUser"
             type="com.struts.registration.web.action.UserAction"
+            parameter="save"
             name="userForm"
             scope="request"
-            parameter="save">
+            input="/createUser.do">
             <forward name="success" path="/listUser.do"/>
         </action>
         <action path="/editUser"
             type="com.struts.registration.web.action.UserAction"
+            parameter="edit"
             name="userForm"
-            parameter="edit">
+            validate="false">
             <forward name="success" path="/views/user/edit.jsp"/>
         </action>
         <action path="/updateUser"
             type="com.struts.registration.web.action.UserAction"
+            parameter="update"
             name="userForm"
-            parameter="update">
+            input="/editUser.do">
             <forward name="success" path="/listUser.do"/>
         </action>
         <action path="/showUser"
             type="com.struts.registration.web.action.UserAction"
+            parameter="show"
             name="userForm"
-            parameter="show">
+            validate="false">
             <forward name="success" path="/views/user/show.jsp"/>
         </action>
         <action path="/deleteUser"
             type="com.struts.registration.web.action.UserAction"
-            name="userForm"
-            parameter="delete">
+            parameter="delete"
+            name="userForm">
             <forward name="success" path="/listUser.do"/>
         </action>
         <action path="/listUser"

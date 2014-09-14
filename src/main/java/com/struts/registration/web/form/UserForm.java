@@ -4,19 +4,23 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+
+import com.struts.registration.domain.UserProperties;
 
 public class UserForm extends ActionForm {
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private String uuid;
-    private String firstName;
-    private String lastName;
-//    private String email;
-//    private Date birthdate;
+    private String username;
+    private String password;
+    private String email;
+    private Date birthdate;
     private Date createdDate;
     private String createdBy;
     private Date lastUpdated;
@@ -38,41 +42,36 @@ public class UserForm extends ActionForm {
         this.uuid = uuid;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public Date getBirthdate() {
-//        return birthdate;
-//    }
-//
-//    public void setBirthdate(Date birthdate) {
-//        this.birthdate = birthdate;
-//    }
+    public String getEmail() {
+        return email;
+    }
 
-    @Override
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        return super.validate(mapping, request);
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     public Date getCreatedDate() {
@@ -107,4 +106,27 @@ public class UserForm extends ActionForm {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    /**
+     * Resets all properties to their default values.
+     */
+    @Override
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        System.out.println(">>> reset call");
+        username = "";
+        super.reset(mapping, request);
+    }
+
+    @Override
+    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
+        System.out.println(">>> validate call");
+        ActionErrors errors = new ActionErrors();
+
+        if (StringUtils.isBlank(username)) {
+            errors.add(UserProperties.USERNAME, new ActionMessage("error.username.required"));
+        }
+        if (StringUtils.isBlank(password)) {
+            errors.add(UserProperties.PASSWORD, new ActionMessage("error.password.required"));
+        }
+        return errors;
+    }
 }
