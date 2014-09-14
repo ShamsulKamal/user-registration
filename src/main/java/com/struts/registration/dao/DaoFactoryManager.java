@@ -2,12 +2,17 @@ package com.struts.registration.dao;
 
 import com.struts.registration.exception.ApplicationException;
 
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ */
 public class DaoFactoryManager extends DaoFactory {
 
     @SuppressWarnings("unchecked")
-    private Dao<?, Long> instantiateDao(Class<?> daoClass) {
+    private GenericDao<?, Long> instantiateDao(Class<?> daoClass) {
         try {
-            return ((Dao<?, Long>) daoClass.newInstance());
+            return ((GenericDao<?, Long>) daoClass.newInstance());
         } catch (Exception e) {
             throw new ApplicationException("Can not instantiate DAO: " + daoClass, e);
         }

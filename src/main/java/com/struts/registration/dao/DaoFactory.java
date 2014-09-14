@@ -2,7 +2,14 @@ package com.struts.registration.dao;
 
 import com.struts.registration.exception.ApplicationException;
 
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ */
 public abstract class DaoFactory {
+
+    public static final Class<?> FACTORY = DaoFactoryManager.class;
 
     public static DaoFactory instance(Class<?> factory) {
         try {

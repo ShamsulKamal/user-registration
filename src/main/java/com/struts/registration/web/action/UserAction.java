@@ -66,7 +66,7 @@ public class UserAction extends BaseAction {
         User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
         PropertyUtils.copyProperties(user, userForm);
         UserDao userDao = getUserDao();
-        userDao.update(user);
+        userDao.save(user);
         return mapping.findForward("success");
     }
 

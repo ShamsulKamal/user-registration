@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.struts.registration.dao.DaoFactory;
-import com.struts.registration.dao.DaoFactoryManager;
 import com.struts.registration.dao.UserDao;
 import com.struts.registration.exception.ApplicationException;
 
@@ -19,12 +18,14 @@ public abstract class BaseAction extends MappingDispatchAction {
     private DaoFactory daoFactory;
 
     public BaseAction() {
-        String daoFactoryName = DaoFactoryManager.class.getName();
+//        String daoFactoryName = DaoFactoryManager.class.getName();
         try {
-            Class<?> daoFactoryClass = Class.forName(daoFactoryName);
-            daoFactory = DaoFactory.instance(daoFactoryClass);
+//            Class<?> daoFactoryClass = Class.forName(daoFactoryName);
+            daoFactory = DaoFactory.instance(DaoFactory.FACTORY);
         } catch (Exception ex) {
-            throw new ApplicationException("Can't find DaoFactory: " + daoFactoryName, ex);
+            String msg = "Can't find DaoFactory: " + DaoFactory.FACTORY.getName();
+            logger.error(msg);
+            throw new ApplicationException(msg, ex);
         }
     }
 

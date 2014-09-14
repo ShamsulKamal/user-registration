@@ -1,8 +1,16 @@
 package com.struts.registration.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface Dao<T, ID> {
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ * @param <T>
+ * @param <ID>
+ */
+public interface Dao<T, ID extends Serializable> {
 
     T findById(ID id);
 
@@ -10,7 +18,7 @@ public interface Dao<T, ID> {
 
     T save(T entity);
 
-    T update(T entity);
+//    T update(T entity);
 
     void delete(T entity);
 }

@@ -19,7 +19,8 @@ public class UserTest {
 
     @BeforeClass
     public static void setUpDaoFactory() {
-        daoFactory = DaoFactoryUtil.getInstance().getDaoFactory();
+//        daoFactory = DaoFactoryUtil.getInstance().getDaoFactory();
+        daoFactory = DaoFactory.instance(DaoFactory.FACTORY);
     }
 
     @AfterClass
@@ -39,7 +40,7 @@ public class UserTest {
 
     @Test
     public void test1Save() {
-        System.out.println("test1Save");
+        println("test1Save");
         User user = new User();
         user.setFirstName("shamsul");
         user.setLastName("kamal");
@@ -51,20 +52,24 @@ public class UserTest {
 
     @Test
     public void test2List() {
-        System.out.println("test2List");
+        println("test2List");
         List<User> users = daoFactory.getUserDao().findAll();
         assertEquals(users.size(), 1);
     }
 
     @Test
     public void test3Update() {
-        System.out.println("test3Update");
+        println("test3Update");
         User user = daoFactory.getUserDao().findById(1L);
         assertNotNull("User not found", user);
         user.setFirstName("Shamsul");
-        daoFactory.getUserDao().update(user);
+        daoFactory.getUserDao().save(user);
 
         assertEquals("Shamsul", user.getFirstName());
         assertEquals("updater", user.getLastUpdatedBy());
+    }
+
+    private void println(String string) {
+        System.out.println(string);
     }
 }
