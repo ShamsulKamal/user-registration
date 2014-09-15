@@ -26,10 +26,21 @@ import com.struts.registration.utils.HibernateUtil;
 public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, ID> {
     private final Logger logger = LoggerFactory.getLogger(GenericDao.class);
     private Class<T> persistentClass;
+    private Session session;
 
     @SuppressWarnings("unchecked")
     public GenericDao() {
         this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+
+    public void setSession(Session s) {
+        this.session = s;
+    }
+
+    protected Session getSession() {
+        if (session == null)
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        return session;
     }
 
     @SuppressWarnings("unchecked")
@@ -37,14 +48,10 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
     public T findById(ID id) {
         T entity;
         try {
-            Session session = HibernateUtil.currentSession();
-            entity = (T) session.get(persistentClass, id);
+            entity = (T) getSession().load(persistentClass, id);
         } catch (HibernateException e) {
             logger.error("No User found with id " + id, e);
             throw new ApplicationException("No User found with id " + id, e);
-        }
-        finally {
-            HibernateUtil.closeSession();
         }
         return entity;
     }
@@ -56,40 +63,20 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
 
     @Override
     public T save(T entity) {
-        Session session = HibernateUtil.currentSession();
-        Transaction txn = null;
         try {
-            txn = session.beginTransaction();
-            session.saveOrUpdate(entity);
-            txn.commit();
+            getSession().saveOrUpdate(entity);
         } catch (Exception e) {
-            if (txn != null) {
-                txn.rollback();
-            }
             throw new ApplicationException(entity.getClass().getSimpleName() + " was unable to save", e);
-        }
-        finally {
-            HibernateUtil.closeSession();
         }
         return entity;
     }
 
     @Override
     public void delete(T entity) {
-        Session session = HibernateUtil.currentSession();
-        Transaction txn = null;
         try {
-            txn = session.beginTransaction();
-            session.delete(entity);
-            txn.commit();
+            getSession().delete(entity);
         } catch (HibernateException e) {
-            if (txn != null) {
-                txn.rollback();
-            }
             throw new ApplicationException(entity.getClass().getSimpleName() + " was unable to delete", e);
-        }
-        finally {
-            HibernateUtil.closeSession();
         }
     }
 
@@ -98,16 +85,10 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
      */
     @SuppressWarnings("unchecked")
     protected List<T> findByCriteria(Criterion... criterion) {
-        try {
-            Session session = HibernateUtil.currentSession();
-            Criteria crit = session.createCriteria(persistentClass);
-            for (Criterion c : criterion) {
-                crit.add(c);
-            }
-            return crit.list();
+        Criteria crit = getSession().createCriteria(persistentClass);
+        for (Criterion c : criterion) {
+            crit.add(c);
         }
-        finally {
-            HibernateUtil.closeSession();
-        }
+        return crit.list();
    }
 }
