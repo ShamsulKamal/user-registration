@@ -26,27 +26,35 @@
             <html-el:hidden property="uuid"/>
             <table border="0" width="100%">
                 <tr>
-                    <th>
+                    <td>
                         <bean:message key="user.username" />
-                    </th>
+                    </td>
                     <td >
                         <html-el:text property="username" size="50" titleKey="user.username" errorStyleClass="error-input" errorKey="org.apache.struts.action.ERROR" />
                     </td>
                 </tr>
                 <tr>
-                    <th>
+                    <td>
                         <bean:message key="user.password" />
-                    </th>
+                    </td>
                     <td>
                         <html-el:password property="password" size="50" titleKey="user.password" errorStyleClass="error-input" errorKey="org.apache.struts.action.ERROR"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>
+                    <td>
                         <bean:message key="user.email" />
-                    </th>
+                    </td>
                     <td>
                         <html-el:text property="email" size="40" maxlength="50" titleKey="user.email" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <bean:message key="user.birthdate" />
+                    </td>
+                    <td>
+                        <html:text property="birthdateStr" size="25" />
                     </td>
                 </tr>
             </table>

@@ -1,11 +1,16 @@
 package com.struts.registration.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,6 +46,8 @@ public class UserAction extends BaseAction {
                     HttpServletResponse response) throws Exception {
 
         UserForm userForm = (UserForm) form;
+
+        logger.debug(">>> save user form: "+ ToStringBuilder.reflectionToString(userForm, ToStringStyle.MULTI_LINE_STYLE));
 
         User user = new User();
         PropertyUtils.copyProperties(user, userForm);
@@ -79,6 +86,9 @@ public class UserAction extends BaseAction {
 
         UserForm userForm = (UserForm) form;
         PropertyUtils.copyProperties(userForm, user);
+        if (user.getBirthdate() != null) {
+            userForm.setBirthdateStr(new SimpleDateFormat("dd/MM/yyyy").format(user.getBirthdate()));
+        }
 
         return mapping.findForward("success");
     }

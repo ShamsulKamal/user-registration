@@ -1,25 +1,38 @@
 package com.struts.registration.web.form;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.EmailValidator;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.struts.registration.domain.UserProperties;
 
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ */
 public class UserForm extends ActionForm {
     private static final long serialVersionUID = 1L;
+    private final Logger logger = LoggerFactory.getLogger(UserForm.class);
 
     private Long id;
     private String uuid;
     private String username;
     private String password;
     private String email;
+    private String birthdateStr;
     private Date birthdate;
     private Date createdDate;
     private String createdBy;
@@ -66,6 +79,14 @@ public class UserForm extends ActionForm {
         this.email = email;
     }
 
+    public String getBirthdateStr() {
+        return birthdateStr;
+    }
+
+    public void setBirthdateStr(String birthdateStr) {
+        this.birthdateStr = birthdateStr;
+    }
+
     public Date getBirthdate() {
         return birthdate;
     }
@@ -106,27 +127,44 @@ public class UserForm extends ActionForm {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    /**
-     * Resets all properties to their default values.
-     */
-    @Override
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-        System.out.println(">>> reset call");
-        username = "";
-        super.reset(mapping, request);
-    }
+//    /**
+//     * Resets all properties to their default values.
+//     */
+//    @Override
+//    public void reset(ActionMapping mapping, HttpServletRequest request) {
+//    }
 
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        System.out.println(">>> validate call");
+        logger.info(">>> validate call");
         ActionErrors errors = new ActionErrors();
+        validateRequired(errors);
+        validateFormat(errors);
+        return errors;
+    }
 
+    private void validateRequired(ActionErrors errors) {
         if (StringUtils.isBlank(username)) {
-            errors.add(UserProperties.USERNAME, new ActionMessage("error.username.required"));
+            errors.add(UserProperties.USERNAME, new ActionMessage(String.format("error.%s.required", UserProperties.USERNAME)));
         }
         if (StringUtils.isBlank(password)) {
-            errors.add(UserProperties.PASSWORD, new ActionMessage("error.password.required"));
+            errors.add(UserProperties.PASSWORD, new ActionMessage(String.format("error.%s.required", UserProperties.PASSWORD)));
         }
-        return errors;
+    }
+
+    private void validateFormat(ActionErrors errors) {
+        if (StringUtils.isNotBlank(email)) {
+            if (!EmailValidator.getInstance().isValid(email)) {
+                errors.add(UserProperties.EMAIL, new ActionMessage(String.format("error.%s.format", UserProperties.EMAIL)));
+            }
+        }
+        if (StringUtils.isNotBlank(birthdateStr)) {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                birthdate = df.parse(birthdateStr);
+            } catch (ParseException e) {
+                errors.add(UserProperties.BIRTHDATE, new ActionMessage(String.format("error.%s.format", UserProperties.BIRTHDATE)));
+            }
+        }
     }
 }

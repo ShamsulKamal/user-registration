@@ -53,6 +53,14 @@
                         <html-el:text property="email" size="40" readonly="true" maxlength="50" titleKey="user.email" />
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <bean:message key="user.birthdate" />
+                    </td>
+                    <td>
+                        <html:text property="birthdateStr" size="25" readonly="true" />
+                    </td>
+                </tr>
             </table>
             <table border="0" width="100%">
                 <tr>

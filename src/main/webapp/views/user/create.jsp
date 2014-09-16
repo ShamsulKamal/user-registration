@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<%@taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -49,14 +48,14 @@
                         <html:text property="email" size="50" />
                     </td>
                 </tr>
-<!--                 <tr> -->
-<!--                     <td class="right"> -->
-<%--                         <bean:message key="user.birthdate" /> --%>
-<!--                     </td> -->
-<!--                     <td class="left"> -->
-<%--                         <html:text property="birthdate" size="50" /> --%>
-<!--                     </td> -->
-<!--                 </tr> -->
+                <tr>
+                    <td>
+                        <bean:message key="user.birthdate" />
+                    </td>
+                    <td>
+                        <html:text property="birthdateStr" size="25" />
+                    </td>
+                </tr>
             </table>
             <table border="0">
                 <tr>

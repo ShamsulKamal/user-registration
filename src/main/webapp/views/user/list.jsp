@@ -21,6 +21,7 @@
             <display:column property="username"/>
 <%--             <display:column property="password"/> --%>
             <display:column property="email"/>
+            <display:column property="birthdate" format="{0,date,dd-MM-yyyy}"/>
             <display:column property="createdBy"/>
             <display:column property="createdDate"/>
             <display:column property="lastUpdatedBy"/>
