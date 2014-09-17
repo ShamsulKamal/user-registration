@@ -1,5 +1,10 @@
 package com.struts.registration.domain;
 
+/**
+ *
+ * @author Shamsul Kamal
+ *
+ */
 public interface UserProperties {
     String ID = "id";
     String UUID = "uuid";
@@ -11,4 +16,5 @@ public interface UserProperties {
     String PASSWORD = "password";
     String EMAIL = "email";
     String BIRTHDATE = "birthdate";
+    String GENDER = "gender";
 }

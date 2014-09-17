@@ -1,6 +1,7 @@
 package com.struts.registration.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.struts.registration.dao.DaoFactory;
-import com.struts.registration.utils.DaoFactoryUtil;
+import com.struts.registration.utils.HibernateUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserTest {
@@ -21,10 +22,12 @@ public class UserTest {
     public static void setUpDaoFactory() {
 //        daoFactory = DaoFactoryUtil.getInstance().getDaoFactory();
         daoFactory = DaoFactory.instance(DaoFactory.FACTORY);
+        HibernateUtil.getSessionFactory().openSession();
     }
 
     @AfterClass
     public static void shutDownClass() {
+        HibernateUtil.getSessionFactory().close();
         daoFactory = null;
     }
 
@@ -45,10 +48,12 @@ public class UserTest {
         user.setUsername("admin");
         user.setPassword("password");
         user.setEmail("admin@mail.com");
+        user.setGender(Gender.MALE);
         daoFactory.getUserDao().save(user);
 
         assertEquals("creator", user.getCreatedBy());
         assertEquals("creator", user.getLastUpdatedBy());
+        assertEquals(Gender.MALE, user.getGender());
     }
 
     @Test

@@ -1,24 +1,27 @@
 package com.struts.registration.web.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.util.LabelValueBean;
+import org.apache.struts.util.MessageResources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.struts.registration.dao.UserDao;
+import com.struts.registration.domain.Gender;
 import com.struts.registration.domain.User;
+import com.struts.registration.domain.UserProperties;
 import com.struts.registration.web.form.UserForm;
 
 /**
@@ -39,6 +42,16 @@ public class UserAction extends BaseAction {
 
     public ActionForward create(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
+        List<LabelValueBean> genders = new ArrayList<LabelValueBean>();
+
+        MessageResources messageResources = getResources(request);
+
+        for (Gender gender : Gender.values()) {
+            genders.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, gender.getName())), gender.getName()));
+        }
+
+        UserForm userForm = (UserForm) form;
+        userForm.setGenders(genders);
         return mapping.findForward("success");
     }
 
@@ -64,6 +77,15 @@ public class UserAction extends BaseAction {
         UserForm userForm = (UserForm) form;
         User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
         PropertyUtils.copyProperties(userForm, user);
+
+
+        MessageResources messageResources = getResources(request);
+        List<LabelValueBean> genders = new ArrayList<LabelValueBean>();
+        for (Gender gender : Gender.values()) {
+            genders.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, gender.getName())), gender.getName()));
+        }
+        userForm.setGenders(genders);
+
         return mapping.findForward("success");
     }
 
@@ -86,9 +108,11 @@ public class UserAction extends BaseAction {
 
         UserForm userForm = (UserForm) form;
         PropertyUtils.copyProperties(userForm, user);
+
         if (user.getBirthdate() != null) {
             userForm.setBirthdateStr(new SimpleDateFormat("dd/MM/yyyy").format(user.getBirthdate()));
         }
+        userForm.setGenderStr(user.getGender().getName());
 
         return mapping.findForward("success");
     }

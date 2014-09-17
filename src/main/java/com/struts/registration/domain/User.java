@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,8 +49,10 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     private String email;
     @Column(name = "BDATE")
     @Type(type = "date")
-//    @NotNull
     private Date birthdate;
+    @Column(name="GENDER")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Override
     public Long getId() {
@@ -141,6 +145,14 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
 
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Object getKey() {

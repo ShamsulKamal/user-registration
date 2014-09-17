@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,9 +14,11 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.apache.struts.util.LabelValueBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.struts.registration.domain.Gender;
 import com.struts.registration.domain.UserProperties;
 
 /**
@@ -34,6 +37,9 @@ public class UserForm extends ActionForm {
     private String email;
     private String birthdateStr;
     private Date birthdate;
+    private Gender gender;
+    private String genderStr;
+    private List<LabelValueBean> genders;
     private Date createdDate;
     private String createdBy;
     private Date lastUpdated;
@@ -95,6 +101,30 @@ public class UserForm extends ActionForm {
         this.birthdate = birthdate;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public String getGenderStr() {
+        return genderStr;
+    }
+
+    public void setGenderStr(String genderStr) {
+        this.genderStr = genderStr;
+    }
+
+    public List<LabelValueBean> getGenders() {
+        return genders;
+    }
+
+    public void setGenders(List<LabelValueBean> genders) {
+        this.genders = genders;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -140,7 +170,18 @@ public class UserForm extends ActionForm {
         ActionErrors errors = new ActionErrors();
         validateRequired(errors);
         validateFormat(errors);
+        validateGender(errors);
         return errors;
+    }
+
+    private void validateGender(ActionErrors errors) {
+        if (StringUtils.isNotBlank(genderStr)) {
+            try {
+                gender = Gender.valueOf(genderStr);
+            } catch (IllegalArgumentException e) {
+                errors.add(UserProperties.USERNAME, new ActionMessage(String.format("error.%s.type", UserProperties.GENDER)));
+            }
+        }
     }
 
     private void validateRequired(ActionErrors errors) {
@@ -149,6 +190,9 @@ public class UserForm extends ActionForm {
         }
         if (StringUtils.isBlank(password)) {
             errors.add(UserProperties.PASSWORD, new ActionMessage(String.format("error.%s.required", UserProperties.PASSWORD)));
+        }
+        if (StringUtils.isBlank(genderStr)) {
+            errors.add(UserProperties.PASSWORD, new ActionMessage(String.format("error.%s.required", UserProperties.GENDER)));
         }
     }
 
@@ -167,4 +211,6 @@ public class UserForm extends ActionForm {
             }
         }
     }
+
+
 }
