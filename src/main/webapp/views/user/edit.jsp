@@ -7,17 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><bean-el:message key="user.edit"/></title>
-<!--         <link rel="stylesheet" type="text/css" href="css/main.css"> -->
-        <script type="text/javascript">
-            function updateUser() {
-                document.forms[0].action='updateUser.do';
-                document.forms[0].submit();
-            }
-            function listUser() {
-                document.forms[0].action='listUser.do';
-                document.forms[0].submit();
-            }
-        </script>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
         <html-el:errors />
@@ -62,22 +52,19 @@
                         <bean-el:message key="user.gender" />
                     </td>
                     <td>
-                        <t:selectoption 
-                            readonly="false" 
-                            property="genderStr" 
-                            defaultOption="false"
-                            collections="${userForm.genders}"/>
-
+                        <html-el:select property="genderStr">
+                            <html-el:optionsCollection property="genders" value="value" label="label"/>
+                        </html-el:select>
                     </td>
                 </tr>
             </table>
             <table border="0" width="100%">
                 <tr>
                     <td>
-                        <html-el:submit onclick="updateUser()">
+                        <html-el:submit onclick="this.form.action='updateUser.do'">
                             <bean-el:message key="button.update" />
                         </html-el:submit>
-                        <html-el:submit onclick="listUser()">
+                        <html-el:submit onclick="this.form.action='listUser.do'">
                             <bean-el:message key="button.cancel" />
                         </html-el:submit>
                     </td>

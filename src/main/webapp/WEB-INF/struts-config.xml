@@ -15,51 +15,57 @@
         <action path="/home" forward="/views/home.jsp" />
         <!-- User module start -->
         <action path="/createUser"
-            type="com.struts.registration.web.action.UserAction"
-            parameter="create"
-            name="userForm"
-            scope="request"
-            validate="false">
+                type="com.struts.registration.web.action.UserAction"
+                parameter="create"
+                name="userForm"
+                scope="request"
+                validate="false">
             <forward name="success" path="/views/user/create.jsp"/>
         </action>
+
         <action path="/saveUser"
-            type="com.struts.registration.web.action.UserAction"
-            parameter="save"
-            name="userForm"
-            scope="request"
-            input="/createUser.do">
+                type="com.struts.registration.web.action.UserAction"
+                parameter="save"
+                name="userForm"
+                scope="request"
+                input="/createUser.do">
             <forward name="success" path="/listUser.do"/>
         </action>
+
         <action path="/editUser"
-            type="com.struts.registration.web.action.UserAction"
-            parameter="edit"
-            name="userForm"
-            validate="false">
+                type="com.struts.registration.web.action.UserAction"
+                parameter="edit"
+                name="userForm"
+                validate="false">
             <forward name="success" path="/views/user/edit.jsp"/>
         </action>
+
         <action path="/updateUser"
-            type="com.struts.registration.web.action.UserAction"
-            parameter="update"
-            name="userForm"
-            input="/editUser.do">
+                type="com.struts.registration.web.action.UserAction"
+                parameter="update"
+                name="userForm"
+                input="/editUser.do">
             <forward name="success" path="/listUser.do"/>
         </action>
+
         <action path="/showUser"
-            type="com.struts.registration.web.action.UserAction"
-            parameter="show"
-            name="userForm"
-            validate="false">
+                type="com.struts.registration.web.action.UserAction"
+                parameter="show"
+                name="userForm"
+                validate="false">
             <forward name="success" path="/views/user/show.jsp"/>
         </action>
+
         <action path="/deleteUser"
-            type="com.struts.registration.web.action.UserAction"
-            parameter="delete"
-            name="userForm">
+                type="com.struts.registration.web.action.UserAction"
+                parameter="delete"
+                name="userForm">
             <forward name="success" path="/listUser.do"/>
         </action>
+
         <action path="/listUser"
-            type="com.struts.registration.web.action.UserAction"
-            parameter="list">
+                type="com.struts.registration.web.action.UserAction"
+                parameter="list">
             <forward name="success" path="/views/user/list.jsp"/>
         </action>
         <!-- User module end -->
@@ -67,6 +73,6 @@
 
     <message-resources parameter="MessageResources" />
 
-    <!--plug-in className=""/-->
+    <plug-in className="com.struts.registration.web.plugin.H2BootStrapPlugin"/>
 
 </struts-config>

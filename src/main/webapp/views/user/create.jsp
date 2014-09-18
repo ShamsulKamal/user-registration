@@ -10,16 +10,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><bean-el:message key="user.create" /></title>
         <link rel="stylesheet" type="text/css" href="css/main.css">
-        <script type="text/javascript">
-//             function saveUser() {
-//                 document.forms[0].action='saveUser.do';
-//                 document.forms[0].submit();
-//             }
-//             function listUser() {
-//                 document.forms[0].action='listUser.do';
-//                 document.forms[0].submit();
-//             }
-        </script>
     </head>
     <body>
         <html-el:errors />
@@ -62,24 +52,21 @@
                         <bean-el:message key="user.gender" />
                     </td>
                     <td>
-                        <t:selectoption 
-                            readonly="false" 
-                            property="genderStr" 
-                            defaultOption="true"
-                            collections="${userForm.genders}"/>
+                        <html-el:select property="genderStr">
+                            <html-el:option value=""><bean-el:message key="select.option.default"/></html-el:option>
+                            <html-el:optionsCollection property="genders" value="value" label="label" />
+                        </html-el:select>
                     </td>
                 </tr>
             </table>
             <table border="0">
                 <tr>
                     <td>
-<%--                         <html-el:submit onclick="saveUser()"> --%>
                         <html-el:submit onclick="this.form.action='saveUser.do'">
                             <bean-el:message key="button.submit" />
                         </html-el:submit>
                     </td>
                     <td>
-<%--                         <html-el:submit onclick="listUser()"> --%>
                         <html-el:submit onclick="this.form.action='listUser.do'">
                             <bean-el:message key="button.cancel" />
                         </html-el:submit>

@@ -8,21 +8,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><bean-el:message key="user.show"/></title>
-        
-        <script type="text/javascript">
-            function editUser() {
-                document.forms[0].action='editUser.do';
-                document.forms[0].submit();
-            }
-            function deleteUser() {
-                document.forms[0].action='deleteUser.do';
-                document.forms[0].submit();
-            }
-            function listUser() {
-                document.forms[0].action='listUser.do';
-                document.forms[0].submit();
-            }
-        </script>
     </head>
     <body>
         <html-el:form>
@@ -66,23 +51,20 @@
                         <bean-el:message key="user.gender" />
                     </td>
                     <td>
-                        <t:selectoption readonly="true" property="genderStr"/>
-<%--                         <html-el:select property="genderStr" disabled="true"> --%>
-<%--                             <html-el:optionsCollection property="genders" label="label" value="value"/> --%>
-<%--                         </html-el:select> --%>
+                        <html-el:text property="genderStr" size="25" readonly="true" />
                     </td>
                 </tr>
             </table>
             <table border="0" width="100%">
                 <tr>
                     <td>
-                        <html-el:submit onclick="editUser()">
+                        <html-el:submit onclick="this.form.action='editUser.do'">
                             <bean-el:message key="button.edit" />
                         </html-el:submit>
-                        <html-el:submit onclick="deleteUser()">
+                        <html-el:submit onclick="this.form.action='deleteUser.do'">
                             <bean-el:message key="button.delete" />
                         </html-el:submit>
-                        <html-el:submit onclick="listUser()">
+                        <html-el:submit onclick="this.form.action='listUser.do'">
                             <bean-el:message key="button.back" />
                         </html-el:submit>
                     </td>
