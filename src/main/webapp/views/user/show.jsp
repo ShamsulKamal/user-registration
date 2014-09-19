@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean-el" prefix="bean-el"%>
 <%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -52,6 +53,17 @@
                     </td>
                     <td>
                         <html-el:text property="genderStr" size="25" readonly="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <bean-el:message key="user.maritalStatus" />
+                    </td>
+                    <td>
+                        <logic:iterate id="row" name="userForm" property="maritalStatuses" type="org.apache.struts.util.LabelValueBean">
+                            <html-el:radio property="maritalStatusStr" value="${row.value}" disabled="true" />
+                            <bean-el:message key="user.maritalStatus.${row.value}"/>
+                        </logic:iterate>  
                     </td>
                 </tr>
             </table>

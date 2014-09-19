@@ -23,6 +23,7 @@
             <display:column property="email"/>
             <display:column property="birthdate" format="{0,date,dd-MM-yyyy}"/>
             <display:column property="gender"/>
+            <display:column property="maritalStatus"/>
             <display:column property="createdBy"/>
             <display:column property="createdDate"/>
             <display:column property="lastUpdatedBy"/>

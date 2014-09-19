@@ -53,6 +53,9 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     @Column(name="GENDER")
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Column(name="MARITALSTATUS")
+    @Enumerated(EnumType.STRING)
+    private MaritalStatus maritalStatus;
 
     @Override
     public Long getId() {
@@ -153,6 +156,14 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public Object getKey() {

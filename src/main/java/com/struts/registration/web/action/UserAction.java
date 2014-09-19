@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.struts.registration.dao.UserDao;
 import com.struts.registration.domain.Gender;
+import com.struts.registration.domain.MaritalStatus;
 import com.struts.registration.domain.User;
 import com.struts.registration.domain.UserProperties;
 import com.struts.registration.web.form.UserForm;
@@ -43,15 +44,20 @@ public class UserAction extends BaseAction {
     public ActionForward create(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
         List<LabelValueBean> genders = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> maritalStatuses = new ArrayList<LabelValueBean>();
 
         MessageResources messageResources = getResources(request);
 
-        for (Gender gender : Gender.values()) {
-            genders.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, gender.getName())), gender.getName()));
+        for (Gender each : Gender.values()) {
+            genders.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, each.getName())), each.getName()));
         }
-
+        for (MaritalStatus each : MaritalStatus.values()) {
+            maritalStatuses.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
+        }
         UserForm userForm = (UserForm) form;
         userForm.setGenders(genders);
+        userForm.setMaritalStatuses(maritalStatuses);
+
         return mapping.findForward("success");
     }
 
@@ -78,13 +84,17 @@ public class UserAction extends BaseAction {
         User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
         PropertyUtils.copyProperties(userForm, user);
 
-
         MessageResources messageResources = getResources(request);
         List<LabelValueBean> genders = new ArrayList<LabelValueBean>();
         for (Gender gender : Gender.values()) {
             genders.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, gender.getName())), gender.getName()));
         }
         userForm.setGenders(genders);
+        List<LabelValueBean> maritalStatuses = new ArrayList<LabelValueBean>();
+        for (MaritalStatus each : MaritalStatus.values()) {
+            maritalStatuses.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
+        }
+        userForm.setMaritalStatuses(maritalStatuses);
 
         return mapping.findForward("success");
     }
@@ -102,17 +112,25 @@ public class UserAction extends BaseAction {
     public ActionForward show(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
 
-        String id = request.getParameter("id");
+        String id = request.getParameter(UserProperties.ID);
         UserDao userDao = getUserDao();
         User user = userDao.findById(Long.valueOf(id));
 
         UserForm userForm = (UserForm) form;
         PropertyUtils.copyProperties(userForm, user);
+        MessageResources messageResources = getResources(request);
 
         if (user.getBirthdate() != null) {
             userForm.setBirthdateStr(new SimpleDateFormat("dd/MM/yyyy").format(user.getBirthdate()));
         }
         userForm.setGenderStr(user.getGender().getName());
+
+        List<LabelValueBean> maritalStatuses = new ArrayList<LabelValueBean>();
+        for (MaritalStatus each : MaritalStatus.values()) {
+            maritalStatuses.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
+        }
+        userForm.setMaritalStatuses(maritalStatuses);
+        userForm.setMaritalStatusStr(user.getMaritalStatus().getName());
 
         return mapping.findForward("success");
     }

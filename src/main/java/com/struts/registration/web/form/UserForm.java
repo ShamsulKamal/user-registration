@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.struts.registration.domain.Gender;
+import com.struts.registration.domain.MaritalStatus;
 import com.struts.registration.domain.UserProperties;
 
 /**
@@ -40,6 +41,9 @@ public class UserForm extends ActionForm {
     private Gender gender;
     private String genderStr;
     private List<LabelValueBean> genders;
+    private MaritalStatus maritalStatus;
+    private String maritalStatusStr;
+    private List<LabelValueBean> maritalStatuses;
     private Date createdDate;
     private String createdBy;
     private Date lastUpdated;
@@ -125,6 +129,30 @@ public class UserForm extends ActionForm {
         this.genders = genders;
     }
 
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getMaritalStatusStr() {
+        return maritalStatusStr;
+    }
+
+    public void setMaritalStatusStr(String maritalStatusStr) {
+        this.maritalStatusStr = maritalStatusStr;
+    }
+
+    public List<LabelValueBean> getMaritalStatuses() {
+        return maritalStatuses;
+    }
+
+    public void setMaritalStatuses(List<LabelValueBean> maritalStatuses) {
+        this.maritalStatuses = maritalStatuses;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -171,7 +199,18 @@ public class UserForm extends ActionForm {
         validateRequired(errors);
         validateFormat(errors);
         validateGender(errors);
+        validateMaritalStatus(errors);
         return errors;
+    }
+
+    private void validateMaritalStatus(ActionErrors errors) {
+        if (StringUtils.isNotBlank(maritalStatusStr)) {
+            try {
+                maritalStatus = MaritalStatus.valueOf(maritalStatusStr);
+            } catch (IllegalArgumentException e) {
+                errors.add(UserProperties.MARITALSTATUS, new ActionMessage(String.format("error.%s.type", UserProperties.MARITALSTATUS)));
+            }
+        }
     }
 
     private void validateGender(ActionErrors errors) {

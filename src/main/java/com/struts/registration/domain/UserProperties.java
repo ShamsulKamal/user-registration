@@ -17,4 +17,5 @@ public interface UserProperties {
     String EMAIL = "email";
     String BIRTHDATE = "birthdate";
     String GENDER = "gender";
+    String MARITALSTATUS = "maritalStatus";
 }
