@@ -18,4 +18,5 @@ public interface UserProperties {
     String BIRTHDATE = "birthdate";
     String GENDER = "gender";
     String MARITALSTATUS = "maritalStatus";
+    String HOBBYTYPES = "hobbyTypes";
 }

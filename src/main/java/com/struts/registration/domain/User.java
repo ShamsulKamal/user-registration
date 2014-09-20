@@ -1,24 +1,32 @@
 package com.struts.registration.domain;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="USER")
+@TypeDef(typeClass=HobbyTypeState.class, name="hobby")
 public class User extends AbstractDomain implements Identifiable, Auditable {
     private static final long serialVersionUID = 1L;
 
@@ -56,6 +64,14 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     @Column(name="MARITALSTATUS")
     @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
+    @Type(type="hobby")
+    @ElementCollection(fetch=FetchType.EAGER)
+    @JoinTable(
+            name="HOBBYTYPE", // ref table.
+            joinColumns = { @JoinColumn(name="USER_ID") }
+    )
+    @Column(name="HOBBYTYPE_NAME")
+    private Set<HobbyType> hobbyTypes = new HashSet<HobbyType>();
 
     @Override
     public Long getId() {
@@ -164,6 +180,22 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
 
     public void setMaritalStatus(MaritalStatus maritalStatus) {
         this.maritalStatus = maritalStatus;
+    }
+
+    public Set<HobbyType> getHobbyTypes() {
+        return hobbyTypes;
+    }
+
+    public void setHobbyTypes(Set<HobbyType> hobbyTypes) {
+        this.hobbyTypes= hobbyTypes;
+    }
+
+    public void addHobbyType(HobbyType hobbyElement) {
+        getHobbyTypes().add(hobbyElement);
+    }
+
+    public void removeHobbyType(HobbyType hobbyElement) {
+        getHobbyTypes().remove(hobbyElement);
     }
 
     public Object getKey() {
