@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.struts.registration.domain.Gender;
+import com.struts.registration.domain.HobbyType;
 import com.struts.registration.domain.MaritalStatus;
 import com.struts.registration.domain.UserProperties;
 
@@ -33,21 +36,25 @@ public class UserForm extends ActionForm {
 
     private Long id;
     private String uuid;
-    private String username;
-    private String password;
-    private String email;
-    private String birthdateStr;
-    private Date birthdate;
-    private Gender gender;
-    private String genderStr;
-    private List<LabelValueBean> genders;
-    private MaritalStatus maritalStatus;
-    private String maritalStatusStr;
-    private List<LabelValueBean> maritalStatuses;
     private Date createdDate;
     private String createdBy;
     private Date lastUpdated;
     private String lastUpdatedBy;
+    private String username;
+    private String password;
+    private String email;
+    private Date birthdate;
+    private Gender gender;
+    private MaritalStatus maritalStatus;
+    private String birthdateStr;
+    private Set<HobbyType> hobbyTypes = new HashSet<HobbyType>();
+
+    private String genderStr;
+    private List<LabelValueBean> genderLabelValueBeans;
+    private String maritalStatusStr;
+    private List<LabelValueBean> maritalStatusLabelValueBeans;
+    private String[] hobbyTypesStr;
+    private List<LabelValueBean> hobbyTypesLabelValueBeans;
 
     public Long getId() {
         return id;
@@ -121,12 +128,12 @@ public class UserForm extends ActionForm {
         this.genderStr = genderStr;
     }
 
-    public List<LabelValueBean> getGenders() {
-        return genders;
+    public List<LabelValueBean> getGenderLabelValueBeans() {
+        return genderLabelValueBeans;
     }
 
-    public void setGenders(List<LabelValueBean> genders) {
-        this.genders = genders;
+    public void setGenderLabelValueBeans(List<LabelValueBean> genderLabelValueBeans) {
+        this.genderLabelValueBeans = genderLabelValueBeans;
     }
 
     public MaritalStatus getMaritalStatus() {
@@ -145,12 +152,36 @@ public class UserForm extends ActionForm {
         this.maritalStatusStr = maritalStatusStr;
     }
 
-    public List<LabelValueBean> getMaritalStatuses() {
-        return maritalStatuses;
+    public List<LabelValueBean> getMaritalStatusLabelValueBeans() {
+        return maritalStatusLabelValueBeans;
     }
 
-    public void setMaritalStatuses(List<LabelValueBean> maritalStatuses) {
-        this.maritalStatuses = maritalStatuses;
+    public void setMaritalStatusLabelValueBeans(List<LabelValueBean> maritalStatusLabelValueBeans) {
+        this.maritalStatusLabelValueBeans = maritalStatusLabelValueBeans;
+    }
+
+    public String[] getHobbyTypesStr() {
+        return hobbyTypesStr;
+    }
+
+    public void setHobbyTypesStr(String[] hobbyTypesStr) {
+        this.hobbyTypesStr = hobbyTypesStr;
+    }
+
+    public List<LabelValueBean> getHobbyTypesLabelValueBeans() {
+        return hobbyTypesLabelValueBeans;
+    }
+
+    public void setHobbyTypesLabelValueBeans(List<LabelValueBean> hobbyTypesLabelValueBeans) {
+        this.hobbyTypesLabelValueBeans = hobbyTypesLabelValueBeans;
+    }
+
+    public Set<HobbyType> getHobbyTypes() {
+        return hobbyTypes;
+    }
+
+    public void setHobbyTypes(Set<HobbyType> hobbyTypes) {
+        this.hobbyTypes = hobbyTypes;
     }
 
     public Date getCreatedDate() {
@@ -200,7 +231,24 @@ public class UserForm extends ActionForm {
         validateFormat(errors);
         validateGender(errors);
         validateMaritalStatus(errors);
+        validateHobbyType(errors);
         return errors;
+    }
+
+    private void validateHobbyType(ActionErrors errors) {
+        HobbyType hobbyType;
+        if (hobbyTypesStr.length != 0) {
+            // removes all current elements
+            hobbyTypes.clear();
+            for (String each : hobbyTypesStr) {
+                try {
+                    hobbyType = HobbyType.valueOf(each);
+                    hobbyTypes.add(hobbyType);
+                } catch (IllegalArgumentException e) {
+                    errors.add(UserProperties.HOBBYTYPES, new ActionMessage(String.format("error.%s.type", UserProperties.HOBBYTYPES)));
+                }
+            }
+        }
     }
 
     private void validateMaritalStatus(ActionErrors errors) {
@@ -250,6 +298,4 @@ public class UserForm extends ActionForm {
             }
         }
     }
-
-
 }

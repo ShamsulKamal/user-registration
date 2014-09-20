@@ -65,7 +65,7 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
     @Type(type="hobby")
-    @ElementCollection(fetch=FetchType.EAGER)
+    @ElementCollection(fetch=FetchType.LAZY)
     @JoinTable(
             name="HOBBYTYPE", // ref table.
             joinColumns = { @JoinColumn(name="USER_ID") }

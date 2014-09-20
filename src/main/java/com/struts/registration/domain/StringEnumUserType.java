@@ -48,7 +48,6 @@ public class StringEnumUserType<E extends Enum<E>> implements UserType {
      * Enum.valueOf(class,int) method, we have to iterate through the given enum.values()
      * in order to find the correct "int".
      */
-
     public Object nullSafeGet(ResultSet resultSet, String[] names, SessionImplementor sessionImplementor,  Object owner)
         throws HibernateException, SQLException {
         String name = resultSet.getString( names[0] );

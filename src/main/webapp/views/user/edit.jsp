@@ -55,7 +55,7 @@
                     </td>
                     <td>
                         <html-el:select property="genderStr">
-                            <html-el:optionsCollection property="genders" value="value" label="label"/>
+                            <html-el:optionsCollection property="genderLabelValueBeans" value="value" label="label"/>
                         </html-el:select>
                     </td>
                 </tr>
@@ -64,9 +64,20 @@
                         <bean-el:message key="user.maritalStatus" />
                     </td>
                     <td>
-                        <logic:iterate id="row" name="userForm" property="maritalStatuses" type="org.apache.struts.util.LabelValueBean">
-                            <html-el:radio property="maritalStatusStr" value="${row.value}"/>
-                            <bean-el:message key="user.maritalStatus.${row.value}"/>
+                        <logic:iterate id="bean" name="userForm" property="maritalStatusLabelValueBeans" type="org.apache.struts.util.LabelValueBean">
+                            <html-el:radio property="maritalStatusStr" value="${bean.value}"/>
+                            <bean-el:message key="user.maritalStatus.${bean.value}"/>
+                        </logic:iterate>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <bean-el:message key="user.hobbyTypes" />
+                    </td>
+                    <td>
+                        <logic:iterate id="bean" name="userForm" property="hobbyTypesLabelValueBeans">
+                            <html-el:multibox property="hobbyTypesStr" value="${bean.value}" />
+                            <bean-el:message key="user.hobbyTypes.${bean.value}"/>
                         </logic:iterate>
                     </td>
                 </tr>

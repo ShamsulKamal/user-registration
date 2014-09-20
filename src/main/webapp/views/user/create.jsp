@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean-el" prefix="bean-el"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
@@ -57,7 +58,7 @@
                     <td>
                         <html-el:select property="genderStr">
                             <html-el:option value=""><bean-el:message key="select.option.default"/></html-el:option>
-                            <html-el:optionsCollection property="genders" value="value" label="label" />
+                            <html-el:optionsCollection property="genderLabelValueBeans" value="value" label="label" />
                         </html-el:select>
                     </td>
                 </tr>
@@ -66,10 +67,21 @@
                         <bean-el:message key="user.maritalStatus" />
                     </td>
                     <td>
-                        <logic:iterate id="row" name="userForm" property="maritalStatuses" type="org.apache.struts.util.LabelValueBean">
-                            <html-el:radio property="maritalStatusStr" value="${row.value}"/>
-                            <bean-el:message key="user.maritalStatus.${row.value}"/>
+                        <logic:iterate id="item" name="userForm" property="maritalStatusLabelValueBeans" type="org.apache.struts.util.LabelValueBean">
+                            <html-el:radio property="maritalStatusStr" value="${item.value}"/>
+                            <bean-el:message key="user.maritalStatus.${item.value}"/>
                         </logic:iterate>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <bean-el:message key="user.hobbyTypes" />
+                    </td>
+                    <td>
+                        <logic:iterate id="item" name="userForm" property="hobbyTypesLabelValueBeans">
+                            <html-el:checkbox property="hobbyTypesStr" value="${item.value}" />
+                            <bean-el:message key="user.hobbyTypes.${item.value}"/>
+                        </logic:iterate>
                     </td>
                 </tr>
             </table>

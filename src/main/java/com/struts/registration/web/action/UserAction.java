@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.struts.registration.dao.UserDao;
 import com.struts.registration.domain.Gender;
+import com.struts.registration.domain.HobbyType;
 import com.struts.registration.domain.MaritalStatus;
 import com.struts.registration.domain.User;
 import com.struts.registration.domain.UserProperties;
@@ -45,6 +46,7 @@ public class UserAction extends BaseAction {
                     HttpServletResponse response) throws Exception {
         List<LabelValueBean> genders = new ArrayList<LabelValueBean>();
         List<LabelValueBean> maritalStatuses = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> hobbyTypes = new ArrayList<LabelValueBean>();
 
         MessageResources messageResources = getResources(request);
 
@@ -54,9 +56,14 @@ public class UserAction extends BaseAction {
         for (MaritalStatus each : MaritalStatus.values()) {
             maritalStatuses.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
         }
+        for (HobbyType each : HobbyType.values()) {
+            hobbyTypes.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.HOBBYTYPES, each.getName())), each.getName()));
+        }
+
         UserForm userForm = (UserForm) form;
-        userForm.setGenders(genders);
-        userForm.setMaritalStatuses(maritalStatuses);
+        userForm.setGenderLabelValueBeans(genders);
+        userForm.setMaritalStatusLabelValueBeans(maritalStatuses);
+        userForm.setHobbyTypesLabelValueBeans(hobbyTypes);
 
         return mapping.findForward("success");
     }
@@ -72,6 +79,7 @@ public class UserAction extends BaseAction {
         PropertyUtils.copyProperties(user, userForm);
 
         UserDao userDao = getUserDao();
+
         userDao.save(user);
         logger.info(">>> user successfully created: " + "[" + user + "]");
 
@@ -85,16 +93,24 @@ public class UserAction extends BaseAction {
         PropertyUtils.copyProperties(userForm, user);
 
         MessageResources messageResources = getResources(request);
-        List<LabelValueBean> genders = new ArrayList<LabelValueBean>();
+
+        List<LabelValueBean> genderLabelValueBeans = new ArrayList<LabelValueBean>();
         for (Gender gender : Gender.values()) {
-            genders.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, gender.getName())), gender.getName()));
+            genderLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, gender.getName())), gender.getName()));
         }
-        userForm.setGenders(genders);
-        List<LabelValueBean> maritalStatuses = new ArrayList<LabelValueBean>();
+        userForm.setGenderLabelValueBeans(genderLabelValueBeans);
+
+        List<LabelValueBean> maritalStatusLabelValueBeans = new ArrayList<LabelValueBean>();
         for (MaritalStatus each : MaritalStatus.values()) {
-            maritalStatuses.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
+            maritalStatusLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
         }
-        userForm.setMaritalStatuses(maritalStatuses);
+        userForm.setMaritalStatusLabelValueBeans(maritalStatusLabelValueBeans);
+
+        List<LabelValueBean> hobbyTypesLabelValueBeans = new ArrayList<LabelValueBean>();
+        for (HobbyType each : HobbyType.values()) {
+            hobbyTypesLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.HOBBYTYPES, each.getName())), each.getName()));
+        }
+        userForm.setHobbyTypesLabelValueBeans(hobbyTypesLabelValueBeans);
 
         return mapping.findForward("success");
     }
@@ -125,12 +141,26 @@ public class UserAction extends BaseAction {
         }
         userForm.setGenderStr(user.getGender().getName());
 
-        List<LabelValueBean> maritalStatuses = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> maritalStatusLabelValueBeans = new ArrayList<LabelValueBean>();
         for (MaritalStatus each : MaritalStatus.values()) {
-            maritalStatuses.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
+            maritalStatusLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
         }
-        userForm.setMaritalStatuses(maritalStatuses);
+        userForm.setMaritalStatusLabelValueBeans(maritalStatusLabelValueBeans);
         userForm.setMaritalStatusStr(user.getMaritalStatus().getName());
+
+        List<LabelValueBean> hobbyTypesLabelValueBeans = new ArrayList<LabelValueBean>();
+        for (HobbyType each : HobbyType.values()) {
+            hobbyTypesLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.HOBBYTYPES, each.getName())), each.getName()));
+        }
+        userForm.setHobbyTypesLabelValueBeans(hobbyTypesLabelValueBeans);
+
+        String[] hobbyTypesStr = new String[user.getHobbyTypes().size()];
+        int i = 0;
+        for (HobbyType each : user.getHobbyTypes()) {
+            hobbyTypesStr[i] = each.getName();
+            i++;
+        }
+        userForm.setHobbyTypesStr(hobbyTypesStr);
 
         return mapping.findForward("success");
     }
