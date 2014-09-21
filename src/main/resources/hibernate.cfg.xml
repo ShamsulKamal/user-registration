@@ -11,7 +11,6 @@
         <property name="hibernate.connection.username">sa</property>
         <property name="hibernate.connection.password"></property>
         <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-    
 <!--         <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property> -->
 <!--         <property name="hibernate.connection.ur">jdbc:hsqldb:mem:testdb</property> -->
 <!--         <property name="hibernate.connection.username">sa</property> -->

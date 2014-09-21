@@ -9,7 +9,16 @@
         <form-bean name="userForm" type="com.struts.registration.web.form.UserForm" />
     </form-beans>
 
-    <global-forwards />
+<!--     <global-exceptions> -->
+<!--         <exception -->
+<!--           key="error.global.mesage" -->
+<!--           type="java.lang.Exception" -->
+<!--           path="/views/error.jsp" /> -->
+<!--     </global-exceptions> -->
+
+<!--     <global-forwards > -->
+<!--         <forward name=""></forward> -->
+<!--     </global-forwards> -->
 
     <action-mappings>
         <action path="/home" forward="/views/home.jsp" />
@@ -73,6 +82,6 @@
 
     <message-resources parameter="MessageResources" />
 
-    <plug-in className="com.struts.registration.web.plugin.H2BootStrapPlugin"/>
+<!--     <plug-in className=""/> -->
 
 </struts-config>

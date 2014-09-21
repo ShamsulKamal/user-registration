@@ -19,6 +19,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.util.MessageResources;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,18 +78,20 @@ public class UserAction extends BaseAction {
 
         UserForm userForm = (UserForm) form;
 
-        FileOutputStream outputStream = null;
-        String filePath = System.getProperty("java.io.tmpdir") + "/" + userForm.getResumeFile().getFileName();
-        try {
-            outputStream = new FileOutputStream(new File(filePath));
-            outputStream.write(userForm.getResumeFile().getFileData());
-        } catch (Exception e) {
-            ActionErrors errors = new ActionErrors();
-            errors.add("resumeFile", new ActionMessage("errors.file.save", userForm.getResumeFile().getFileName()));
-            saveErrors(request, errors);
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
+        if (userForm.getDocumentFormFile().getFileData().length != 0) {
+            FileOutputStream outputStream = null;
+            String filePath = System.getProperty("java.io.tmpdir") + "/" + userForm.getDocumentFormFile().getFileName();
+            try {
+                outputStream = new FileOutputStream(new File(filePath));
+                outputStream.write(userForm.getDocumentFormFile().getFileData());
+            } catch (Exception e) {
+                ActionErrors errors = new ActionErrors();
+                errors.add("document", new ActionMessage("errors.file.save", userForm.getDocumentFormFile().getFileName()));
+                saveErrors(request, errors);
+            } finally {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
             }
         }
 
@@ -113,6 +116,7 @@ public class UserAction extends BaseAction {
                     HttpServletResponse response) throws Exception {
         UserForm userForm = (UserForm) form;
         User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
+        Hibernate.initialize(user.getHobbyTypes());
         PropertyUtils.copyProperties(userForm, user);
 
         MessageResources messageResources = getResources(request);
@@ -152,8 +156,9 @@ public class UserAction extends BaseAction {
                     HttpServletResponse response) throws Exception {
 
         String id = request.getParameter(UserProperties.ID);
+        String uuid = request.getParameter(UserProperties.UUID);
         UserDao userDao = getUserDao();
-        User user = userDao.findById(Long.valueOf(id));
+        User user = userDao.findByIdAndUuid(Long.valueOf(id), uuid);
 
         UserForm userForm = (UserForm) form;
         PropertyUtils.copyProperties(userForm, user);

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-html-el" prefix="html-el"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean-el" prefix="bean-el"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
@@ -86,12 +87,18 @@
                 </tr>
                 <tr>
                     <td>
-                        <bean-el:message key="user.resume" />
+                        <bean-el:message key="user.document" />
                     </td>
                     <td>
-<%--                         <html-el:form> --%>
-                            <html-el:file property="resumeFile" value="${resumeFile.fileName}"></html-el:file>
-<%--                         </html-el:form> --%>
+                        <html-el:file property="documentFormFile"></html-el:file>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <bean-el:message key="user.comment" />
+                    </td>
+                    <td>
+                        <html-el:textarea property="comment"></html-el:textarea>
                     </td>
                 </tr>
             </table>

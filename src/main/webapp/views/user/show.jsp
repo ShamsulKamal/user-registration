@@ -77,6 +77,22 @@
                         </logic:iterate>
                     </td>
                 </tr>
+<%--                 <tr> --%>
+<%--                     <td> --%>
+<%--                         <bean-el:message key="user.document" /> --%>
+<%--                     </td> --%>
+<%--                     <td> --%>
+<%--                         <html-el:file property="documentFormFile" value="${documentFormFile.fileName}"></html-el:file> --%>
+<%--                     </td> --%>
+<%--                 </tr> --%>
+                <tr>
+                    <td>
+                        <bean-el:message key="user.comment" />
+                    </td>
+                    <td>
+                        <html-el:textarea property="comment" readonly="true"></html-el:textarea>
+                    </td>
+                </tr>
             </table>
             <table border="0" width="100%">
                 <tr>

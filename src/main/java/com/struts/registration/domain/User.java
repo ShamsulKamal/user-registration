@@ -72,6 +72,10 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     )
     @Column(name="HOBBYTYPE_NAME")
     private Set<HobbyType> hobbyTypes = new HashSet<HobbyType>();
+    // TODO
+    // private CLOB document;
+    @Column(name="COMMENT")
+    private String comment;
 
     @Override
     public Long getId() {
@@ -196,6 +200,14 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
 
     public void removeHobbyType(HobbyType hobbyElement) {
         getHobbyTypes().remove(hobbyElement);
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Object getKey() {

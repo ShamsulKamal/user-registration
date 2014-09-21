@@ -18,6 +18,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.util.LabelValueBean;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,7 @@ public class UserForm extends ActionForm {
     private Gender gender;
     private MaritalStatus maritalStatus;
     private Set<HobbyType> hobbyTypes = new HashSet<HobbyType>();
+    private String comment;
 
     private String birthdateStr;
     private String genderStr;
@@ -56,7 +58,7 @@ public class UserForm extends ActionForm {
     private List<LabelValueBean> maritalStatusLabelValueBeans;
     private String[] hobbyTypesStr;
     private List<LabelValueBean> hobbyTypesLabelValueBeans;
-    private FormFile resumeFile;
+    private FormFile documentFormFile;
 
     public Long getId() {
         return id;
@@ -186,6 +188,14 @@ public class UserForm extends ActionForm {
         this.hobbyTypes = hobbyTypes;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -225,30 +235,68 @@ public class UserForm extends ActionForm {
 //    public void reset(ActionMapping mapping, HttpServletRequest request) {
 //    }
 
-    public FormFile getResumeFile() {
-        return resumeFile;
+
+    public FormFile getDocumentFormFile() {
+        return documentFormFile;
     }
 
-    public void setResumeFile(FormFile resumeFile) {
-        this.resumeFile = resumeFile;
+    public void setDocumentFormFile(FormFile documentFormFile) {
+        this.documentFormFile = documentFormFile;
     }
 
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         logger.info(">>> validate call");
         ActionErrors errors = new ActionErrors();
-        validateRequired(errors);
-        validateFormat(errors);
+        validateUsername(errors);
+        validatePassword(errors);
+        validateEmail(errors);
+        validateBirthdate(errors);
         validateGender(errors);
         validateMaritalStatus(errors);
-        validateHobbyType(errors);
+        validateHobbyTypes(errors);
+//        validateComment(errors);
 //        validateResume(errors);
         return errors;
     }
 
-    private void validateResume(ActionErrors errors) {
-        if(resumeFile.getFileSize()== 0){
-            errors.add("common.file.err", new ActionMessage("error.resume.required"));
+    private void validateComment(ActionErrors errors) {
+    }
+
+    private void validateBirthdate(ActionErrors errors) {
+        if (StringUtils.isNotBlank(birthdateStr)) {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                birthdate = df.parse(birthdateStr);
+            } catch (ParseException e) {
+                errors.add(UserProperties.BIRTHDATE, new ActionMessage(String.format("error.%s.format", UserProperties.BIRTHDATE)));
+            }
+        }
+    }
+
+    private void validateEmail(ActionErrors errors) {
+        if (StringUtils.isNotBlank(email)) {
+            if (!EmailValidator.getInstance().isValid(email)) {
+                errors.add(UserProperties.EMAIL, new ActionMessage(String.format("error.%s.format", UserProperties.EMAIL)));
+            }
+        }
+    }
+
+    private void validatePassword(ActionErrors errors) {
+        if (StringUtils.isBlank(password)) {
+            errors.add(UserProperties.PASSWORD, new ActionMessage(String.format("error.%s.required", UserProperties.PASSWORD)));
+        }
+    }
+
+    private void validateUsername(ActionErrors errors) {
+        if (StringUtils.isBlank(username)) {
+            errors.add(UserProperties.USERNAME, new ActionMessage(String.format("error.%s.required", UserProperties.USERNAME)));
+        }
+    }
+
+    private void validateDocumentFormFile(ActionErrors errors) {
+        if(documentFormFile.getFileSize()== 0){
+            errors.add("common.file.err", new ActionMessage("error.document.required"));
         }
 
          //only allow textfile to upload
@@ -265,7 +313,7 @@ public class UserForm extends ActionForm {
 //         }
     }
 
-    private void validateHobbyType(ActionErrors errors) {
+    private void validateHobbyTypes(ActionErrors errors) {
         HobbyType hobbyType;
         if (hobbyTypesStr != null && hobbyTypesStr.length != 0) {
             // removes all current elements
@@ -292,39 +340,14 @@ public class UserForm extends ActionForm {
     }
 
     private void validateGender(ActionErrors errors) {
-        if (StringUtils.isNotBlank(genderStr)) {
+        if (StringUtils.isBlank(genderStr)) {
+            errors.add(UserProperties.GENDER, new ActionMessage(String.format("error.%s.required", UserProperties.GENDER)));
+        }
+        else {
             try {
                 gender = Gender.valueOf(genderStr);
             } catch (IllegalArgumentException e) {
-                errors.add(UserProperties.USERNAME, new ActionMessage(String.format("error.%s.type", UserProperties.GENDER)));
-            }
-        }
-    }
-
-    private void validateRequired(ActionErrors errors) {
-        if (StringUtils.isBlank(username)) {
-            errors.add(UserProperties.USERNAME, new ActionMessage(String.format("error.%s.required", UserProperties.USERNAME)));
-        }
-        if (StringUtils.isBlank(password)) {
-            errors.add(UserProperties.PASSWORD, new ActionMessage(String.format("error.%s.required", UserProperties.PASSWORD)));
-        }
-        if (StringUtils.isBlank(genderStr)) {
-            errors.add(UserProperties.PASSWORD, new ActionMessage(String.format("error.%s.required", UserProperties.GENDER)));
-        }
-    }
-
-    private void validateFormat(ActionErrors errors) {
-        if (StringUtils.isNotBlank(email)) {
-            if (!EmailValidator.getInstance().isValid(email)) {
-                errors.add(UserProperties.EMAIL, new ActionMessage(String.format("error.%s.format", UserProperties.EMAIL)));
-            }
-        }
-        if (StringUtils.isNotBlank(birthdateStr)) {
-            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            try {
-                birthdate = df.parse(birthdateStr);
-            } catch (ParseException e) {
-                errors.add(UserProperties.BIRTHDATE, new ActionMessage(String.format("error.%s.format", UserProperties.BIRTHDATE)));
+                errors.add(UserProperties.GENDER, new ActionMessage(String.format("error.%s.type", UserProperties.GENDER)));
             }
         }
     }

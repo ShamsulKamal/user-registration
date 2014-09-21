@@ -19,4 +19,6 @@ public interface UserProperties {
     String GENDER = "gender";
     String MARITALSTATUS = "maritalStatus";
     String HOBBYTYPES = "hobbyTypes";
+    // String DOCUMENT = "document";
+    String COMMENT = "comment";
 }

@@ -9,6 +9,13 @@ public class UserDecorator extends TableDecorator {
     public String getUsername() {
         User user = (User) getCurrentRowObject();
 
-        return "<a href=\"showUser.do?id=" + user.getId() + "\">" + user.getUsername() + "</a>";
+        String url = "<a href=\"showUser.do?id=" +
+                        user.getId() +
+                        "&uuid=" +
+                        user.getUuid() +
+                        "\">" +
+                        user.getUsername() + "</a>";
+
+        return url;
     }
 }
