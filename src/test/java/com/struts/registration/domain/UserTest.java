@@ -22,7 +22,7 @@ public class UserTest {
     public static void setUpDaoFactory() {
 //        daoFactory = DaoFactoryUtil.getInstance().getDaoFactory();
         daoFactory = DaoFactory.instance(DaoFactory.FACTORY);
-        HibernateUtil.getSessionFactory().openSession();
+        HibernateUtil.getSessionFactory().openSession().beginTransaction();
     }
 
     @AfterClass
@@ -49,7 +49,10 @@ public class UserTest {
         user.setPassword("password");
         user.setEmail("admin@mail.com");
         user.setGender(Gender.MALE);
+        user.addHobbyType(HobbyType.SPORT);
         daoFactory.getUserDao().save(user);
+
+        HibernateUtil.getSessionFactory().openSession().getTransaction().commit();
 
         assertEquals("creator", user.getCreatedBy());
         assertEquals("creator", user.getLastUpdatedBy());

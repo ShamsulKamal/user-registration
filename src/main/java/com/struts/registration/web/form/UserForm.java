@@ -16,6 +16,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.apache.struts.upload.FormFile;
 import org.apache.struts.util.LabelValueBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,15 +47,16 @@ public class UserForm extends ActionForm {
     private Date birthdate;
     private Gender gender;
     private MaritalStatus maritalStatus;
-    private String birthdateStr;
     private Set<HobbyType> hobbyTypes = new HashSet<HobbyType>();
 
+    private String birthdateStr;
     private String genderStr;
     private List<LabelValueBean> genderLabelValueBeans;
     private String maritalStatusStr;
     private List<LabelValueBean> maritalStatusLabelValueBeans;
     private String[] hobbyTypesStr;
     private List<LabelValueBean> hobbyTypesLabelValueBeans;
+    private FormFile resumeFile;
 
     public Long getId() {
         return id;
@@ -223,6 +225,14 @@ public class UserForm extends ActionForm {
 //    public void reset(ActionMapping mapping, HttpServletRequest request) {
 //    }
 
+    public FormFile getResumeFile() {
+        return resumeFile;
+    }
+
+    public void setResumeFile(FormFile resumeFile) {
+        this.resumeFile = resumeFile;
+    }
+
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         logger.info(">>> validate call");
@@ -232,12 +242,32 @@ public class UserForm extends ActionForm {
         validateGender(errors);
         validateMaritalStatus(errors);
         validateHobbyType(errors);
+//        validateResume(errors);
         return errors;
+    }
+
+    private void validateResume(ActionErrors errors) {
+        if(resumeFile.getFileSize()== 0){
+            errors.add("common.file.err", new ActionMessage("error.resume.required"));
+        }
+
+         //only allow textfile to upload
+//         if(!"text/plain".equals(resumeFile.getContentType())){
+//             errors.add("common.file.err.ext",
+//              new ActionMessage("error.common.file.textfile.only"));
+//         }
+
+             //file size cant larger than 10kb
+//         System.out.println(resumeFile.getFileSize());
+//         if(resumeFile.getFileSize() > 10240){ //10kb
+//            errors.add("common.file.err.size",
+//             new ActionMessage("error.common.file.size.limit", 10240));
+//         }
     }
 
     private void validateHobbyType(ActionErrors errors) {
         HobbyType hobbyType;
-        if (hobbyTypesStr.length != 0) {
+        if (hobbyTypesStr != null && hobbyTypesStr.length != 0) {
             // removes all current elements
             hobbyTypes.clear();
             for (String each : hobbyTypesStr) {

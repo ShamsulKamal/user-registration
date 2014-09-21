@@ -17,7 +17,7 @@
     </head>
     <body>
         <html-el:errors />
-        <html-el:form focus="firstName">
+        <html-el:form focus="firstName" enctype="multipart/form-data">
             <table border="0" width="100%">
                 <tr>
                     <td>
@@ -82,6 +82,16 @@
                             <html-el:checkbox property="hobbyTypesStr" value="${item.value}" />
                             <bean-el:message key="user.hobbyTypes.${item.value}"/>
                         </logic:iterate>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <bean-el:message key="user.resume" />
+                    </td>
+                    <td>
+<%--                         <html-el:form> --%>
+                            <html-el:file property="resumeFile" value="${resumeFile.fileName}"></html-el:file>
+<%--                         </html-el:form> --%>
                     </td>
                 </tr>
             </table>

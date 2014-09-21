@@ -1,5 +1,7 @@
 package com.struts.registration.web.action;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.util.MessageResources;
 import org.slf4j.Logger;
@@ -44,26 +48,26 @@ public class UserAction extends BaseAction {
 
     public ActionForward create(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
-        List<LabelValueBean> genders = new ArrayList<LabelValueBean>();
-        List<LabelValueBean> maritalStatuses = new ArrayList<LabelValueBean>();
-        List<LabelValueBean> hobbyTypes = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> genderLabelValueBeans = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> maritalStatusLabelValueBeans = new ArrayList<LabelValueBean>();
+        List<LabelValueBean> hobbyTypesLabelValueBeans = new ArrayList<LabelValueBean>();
 
         MessageResources messageResources = getResources(request);
 
         for (Gender each : Gender.values()) {
-            genders.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, each.getName())), each.getName()));
+            genderLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.GENDER, each.getName())), each.getName()));
         }
         for (MaritalStatus each : MaritalStatus.values()) {
-            maritalStatuses.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
+            maritalStatusLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.MARITALSTATUS, each.getName())), each.getName()));
         }
         for (HobbyType each : HobbyType.values()) {
-            hobbyTypes.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.HOBBYTYPES, each.getName())), each.getName()));
+            hobbyTypesLabelValueBeans.add(new LabelValueBean(messageResources.getMessage(String.format("user.%s.%s", UserProperties.HOBBYTYPES, each.getName())), each.getName()));
         }
 
         UserForm userForm = (UserForm) form;
-        userForm.setGenderLabelValueBeans(genders);
-        userForm.setMaritalStatusLabelValueBeans(maritalStatuses);
-        userForm.setHobbyTypesLabelValueBeans(hobbyTypes);
+        userForm.setGenderLabelValueBeans(genderLabelValueBeans);
+        userForm.setMaritalStatusLabelValueBeans(maritalStatusLabelValueBeans);
+        userForm.setHobbyTypesLabelValueBeans(hobbyTypesLabelValueBeans);
 
         return mapping.findForward("success");
     }
@@ -72,6 +76,21 @@ public class UserAction extends BaseAction {
                     HttpServletResponse response) throws Exception {
 
         UserForm userForm = (UserForm) form;
+
+        FileOutputStream outputStream = null;
+        String filePath = System.getProperty("java.io.tmpdir") + "/" + userForm.getResumeFile().getFileName();
+        try {
+            outputStream = new FileOutputStream(new File(filePath));
+            outputStream.write(userForm.getResumeFile().getFileData());
+        } catch (Exception e) {
+            ActionErrors errors = new ActionErrors();
+            errors.add("resumeFile", new ActionMessage("errors.file.save", userForm.getResumeFile().getFileName()));
+            saveErrors(request, errors);
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
 
         logger.debug(">>> save user form: "+ ToStringBuilder.reflectionToString(userForm, ToStringStyle.MULTI_LINE_STYLE));
 
@@ -83,7 +102,11 @@ public class UserAction extends BaseAction {
         userDao.save(user);
         logger.info(">>> user successfully created: " + "[" + user + "]");
 
-        return mapping.findForward("success");
+        if(getErrors(request).isEmpty()){
+            return mapping.findForward("success");
+        } else {
+            return mapping.getInputForward();
+        }
     }
 
     public ActionForward edit(ActionMapping mapping, ActionForm form, HttpServletRequest request,
