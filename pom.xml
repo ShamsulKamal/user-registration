@@ -6,7 +6,7 @@
     <groupId>com.struts</groupId>
     <artifactId>user-registration</artifactId>
     <packaging>war</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <name>Struts User Registration apps</name>
     <url>http://struts.apache.org/1.x</url>
 
