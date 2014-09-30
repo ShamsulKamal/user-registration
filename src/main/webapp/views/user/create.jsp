@@ -18,7 +18,7 @@
     </head>
     <body>
         <html-el:errors />
-        <html-el:form focus="firstName" enctype="multipart/form-data">
+        <html-el:form action="/saveUser.do" focus="firstName" enctype="multipart/form-data">
             <table border="0" width="100%">
                 <tr>
                     <td>
@@ -105,14 +105,18 @@
             <table border="0">
                 <tr>
                     <td>
-                        <html-el:submit onclick="this.form.action='saveUser.do'">
+<%--                         <html-el:submit onclick="this.form.action='saveUser.do'"> --%>
+                        <html-el:submit>
                             <bean-el:message key="button.submit" />
                         </html-el:submit>
                     </td>
                     <td>
-                        <html-el:submit onclick="this.form.action='listUser.do'">
+<%--                         <html-el:submit onclick="this.form.action='listUser.do'"> --%>
+<%--                             <bean-el:message key="button.cancel" /> --%>
+<%--                         </html-el:submit> --%>
+                        <html-el:cancel>
                             <bean-el:message key="button.cancel" />
-                        </html-el:submit>
+                        </html-el:cancel>
                     </td>
                     <td>
                         <html-el:reset>

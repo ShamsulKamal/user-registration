@@ -16,9 +16,9 @@
 <!--           path="/views/error.jsp" /> -->
 <!--     </global-exceptions> -->
 
-<!--     <global-forwards > -->
-<!--         <forward name=""></forward> -->
-<!--     </global-forwards> -->
+    <global-forwards >
+        <forward name="index" path="/home.do"></forward>
+    </global-forwards>
 
     <action-mappings>
         <action path="/home" forward="/views/home.jsp" />
@@ -37,6 +37,7 @@
                 parameter="save"
                 name="userForm"
                 scope="request"
+                cancellable="true"
                 input="/createUser.do">
             <forward name="success" path="/listUser.do"/>
         </action>
@@ -82,6 +83,6 @@
 
     <message-resources parameter="MessageResources" />
 
-<!--     <plug-in className=""/> -->
+    <plug-in className="com.struts.registration.web.plugin.H2BootStrapPlugin"/>
 
 </struts-config>

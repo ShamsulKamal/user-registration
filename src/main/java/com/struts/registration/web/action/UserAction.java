@@ -75,6 +75,9 @@ public class UserAction extends BaseAction {
 
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
+        if (isCancelled(request)) {
+            return mapping.findForward("index");
+        }
 
         UserForm userForm = (UserForm) form;
 
