@@ -78,6 +78,11 @@
                 parameter="list">
             <forward name="success" path="/views/user/list.jsp"/>
         </action>
+        
+        <action path="/download"
+                type="com.struts.registration.web.action.DownloadDocumentAction"
+                scope="request">
+        </action>
         <!-- User module end -->
     </action-mappings>
 

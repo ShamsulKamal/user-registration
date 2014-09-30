@@ -29,6 +29,7 @@ import com.struts.registration.domain.HobbyType;
 import com.struts.registration.domain.MaritalStatus;
 import com.struts.registration.domain.User;
 import com.struts.registration.domain.UserProperties;
+import com.struts.registration.utils.PropertiesUtil;
 import com.struts.registration.web.form.UserForm;
 
 /**
@@ -80,12 +81,14 @@ public class UserAction extends BaseAction {
         }
 
         UserForm userForm = (UserForm) form;
+        User user = new User();
 
         if (userForm.getDocumentFormFile().getFileData().length != 0) {
             FileOutputStream outputStream = null;
-            String filePath = System.getProperty("java.io.tmpdir") + "/" + userForm.getDocumentFormFile().getFileName();
+//            String filePath = System.getProperty("java.io.tmpdir") + "/" + userForm.getDocumentFormFile().getFileName();
+            String documentPath = System.getProperty("user.home") + PropertiesUtil.getValue("document.path") + "/" + userForm.getDocumentFormFile().getFileName();
             try {
-                outputStream = new FileOutputStream(new File(filePath));
+                outputStream = new FileOutputStream(new File(documentPath));
                 outputStream.write(userForm.getDocumentFormFile().getFileData());
             } catch (Exception e) {
                 ActionErrors errors = new ActionErrors();
@@ -96,11 +99,11 @@ public class UserAction extends BaseAction {
                     outputStream.close();
                 }
             }
+            user.setDocumentPath(documentPath);
         }
 
         logger.debug(">>> save user form: "+ ToStringBuilder.reflectionToString(userForm, ToStringStyle.MULTI_LINE_STYLE));
 
-        User user = new User();
         PropertyUtils.copyProperties(user, userForm);
 
         UserDao userDao = getUserDao();

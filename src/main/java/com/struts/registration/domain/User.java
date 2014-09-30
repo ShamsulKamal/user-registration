@@ -76,6 +76,8 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     // private CLOB document;
     @Column(name="COMMENT")
     private String comment;
+    @Column(name="DOCUMENTPATH")
+    private String documentPath;
 
     @Override
     public Long getId() {
@@ -208,6 +210,14 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getDocumentPath() {
+        return documentPath;
+    }
+
+    public void setDocumentPath(String documentPath) {
+        this.documentPath = documentPath;
     }
 
     public Object getKey() {
