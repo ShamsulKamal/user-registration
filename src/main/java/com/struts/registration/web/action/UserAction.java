@@ -17,6 +17,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.util.MessageResources;
 import org.hibernate.Hibernate;
@@ -50,6 +51,7 @@ public class UserAction extends BaseAction {
 
     public ActionForward create(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
+        saveToken(request);
         List<LabelValueBean> genderLabelValueBeans = new ArrayList<LabelValueBean>();
         List<LabelValueBean> maritalStatusLabelValueBeans = new ArrayList<LabelValueBean>();
         List<LabelValueBean> hobbyTypesLabelValueBeans = new ArrayList<LabelValueBean>();
@@ -80,6 +82,23 @@ public class UserAction extends BaseAction {
             return mapping.findForward("index");
         }
 
+        ActionErrors errors = new ActionErrors();
+     // Prevent unintentional duplication submissions by checking
+        // that we have not received this token previously
+        if (!isTokenValid(request)) {
+            errors.add(
+                ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("errors.token"));
+        }
+        resetToken(request);
+
+        // Report any errors we have discovered back to the original form
+        if (!errors.isEmpty()) {
+            saveErrors(request, errors);
+            saveToken(request);
+            return (mapping.getInputForward());
+        }
+
         UserForm userForm = (UserForm) form;
         User user = new User();
 
@@ -91,7 +110,7 @@ public class UserAction extends BaseAction {
                 outputStream = new FileOutputStream(new File(documentPath));
                 outputStream.write(userForm.getDocumentFormFile().getFileData());
             } catch (Exception e) {
-                ActionErrors errors = new ActionErrors();
+//                ActionErrors errors = new ActionErrors();
                 errors.add("document", new ActionMessage("errors.file.save", userForm.getDocumentFormFile().getFileName()));
                 saveErrors(request, errors);
             } finally {
@@ -122,7 +141,9 @@ public class UserAction extends BaseAction {
                     HttpServletResponse response) throws Exception {
         UserForm userForm = (UserForm) form;
         User user = getUserDao().findByIdAndUuid(userForm.getId(), userForm.getUuid());
+
         Hibernate.initialize(user.getHobbyTypes());
+
         PropertyUtils.copyProperties(userForm, user);
 
         MessageResources messageResources = getResources(request);

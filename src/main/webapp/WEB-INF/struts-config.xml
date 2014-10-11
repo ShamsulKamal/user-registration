@@ -88,6 +88,6 @@
 
     <message-resources parameter="MessageResources" />
 
-    <plug-in className="com.struts.registration.web.plugin.H2BootStrapPlugin"/>
+<!--     <plug-in className=""/> -->
 
 </struts-config>

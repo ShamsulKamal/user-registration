@@ -22,7 +22,7 @@ public class UserTest {
     public static void setUpDaoFactory() {
 //        daoFactory = DaoFactoryUtil.getInstance().getDaoFactory();
         daoFactory = DaoFactory.instance(DaoFactory.FACTORY);
-        HibernateUtil.getSessionFactory().openSession().beginTransaction();
+        HibernateUtil.getSessionFactory().openSession();//.beginTransaction();
     }
 
     @AfterClass
@@ -52,7 +52,7 @@ public class UserTest {
         user.addHobbyType(HobbyType.SPORT);
         daoFactory.getUserDao().save(user);
 
-        HibernateUtil.getSessionFactory().openSession().getTransaction().commit();
+//        HibernateUtil.getSessionFactory().openSession().getTransaction().commit();
 
         assertEquals("creator", user.getCreatedBy());
         assertEquals("creator", user.getLastUpdatedBy());
