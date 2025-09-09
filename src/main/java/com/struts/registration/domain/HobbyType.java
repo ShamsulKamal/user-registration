@@ -1,6 +1,8 @@
 package com.struts.registration.domain;
 
-public enum HobbyType {
+import java.io.Serializable;
+
+public enum HobbyType implements Serializable {
     TRAVELLING,
     COOKING,
     SPORT;

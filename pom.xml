@@ -10,6 +10,12 @@
     <name>Struts User Registration apps</name>
     <url>http://struts.apache.org/1.x</url>
 
+    <properties>
+        <hibernate.version>5.4.32.Final</hibernate.version>
+        <hibernate.validator.version>6.0.22.Final</hibernate.validator.version>
+        <validation.api.version>2.0.1.Final</validation.api.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.struts</groupId>
@@ -53,7 +59,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.7</version>
+            <version>2.14.0</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -73,15 +79,34 @@
         <!-- <version>1.2</version> -->
         <!-- </dependency> -->
 
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.3.20.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.23.Final</version>
+            <version>${hibernate.validator.version}</version>
+        </dependency>
+        <!-- Remove hibernate-validator-cdi if not using CDI -->
+        <!--
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-cdi</artifactId>
+            <version>${hibernate.validator.version}</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b12</version> <!-- EL implementation needed for validation messages -->
         </dependency>
         <dependency>
             <groupId>org.hibernate.common</groupId>
@@ -112,8 +137,7 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>1.0.0.GA</version>
-            <scope>provided</scope>
+            <version>2.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
@@ -174,8 +198,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
