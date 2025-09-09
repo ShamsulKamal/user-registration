@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ import com.struts.registration.utils.HibernateUtil;
  */
 public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, ID> {
     private final Logger logger = LoggerFactory.getLogger(GenericDao.class);
-    private Class<T> persistentClass;
+    private final Class<T> persistentClass;
     private Session session;
 
     @SuppressWarnings("unchecked")
@@ -32,13 +33,10 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
         this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public void setSession(Session s) {
-        this.session = s;
-    }
-
     protected Session getSession() {
-        if (session == null)
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        if (session == null) {
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
         return session;
     }
 
@@ -47,10 +45,13 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
     public T findById(ID id) {
         T entity;
         try {
-            entity = (T) getSession().load(persistentClass, id);
+            entity = (T) getSession().get(persistentClass, id);
+            if (entity == null) {
+                throw new ApplicationException("No entity found with id " + id);
+            }
         } catch (HibernateException e) {
-            logger.error("No User found with id " + id, e);
-            throw new ApplicationException("No User found with id " + id, e);
+            logger.error("No entity found with id {}", id, e);
+            throw new ApplicationException("No entity found with id " + id, e);
         }
         return entity;
     }
@@ -62,9 +63,15 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
 
     @Override
     public T save(T entity) {
-        try {
-            getSession().saveOrUpdate(entity);
+        Transaction transaction = null;
+        try (Session session = getSession()) {
+            transaction = session.beginTransaction();
+            session.saveOrUpdate(entity);
+            transaction.commit();
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new ApplicationException(entity.getClass().getSimpleName() + " was unable to save", e);
         }
         return entity;
@@ -72,9 +79,15 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
 
     @Override
     public void delete(T entity) {
-        try {
-            getSession().delete(entity);
+        Transaction transaction = null;
+        try (Session session = getSession()) {
+            transaction = session.beginTransaction();
+            session.delete(entity);
+            transaction.commit();
         } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new ApplicationException(entity.getClass().getSimpleName() + " was unable to delete", e);
         }
     }
@@ -84,6 +97,7 @@ public abstract class GenericDao<T, ID extends Serializable> implements Dao<T, I
      */
     @SuppressWarnings("unchecked")
     protected List<T> findByCriteria(Criterion... criterion) {
+        // FIXME: replace deprecated method
         Criteria crit = getSession().createCriteria(persistentClass);
         for (Criterion c : criterion) {
             crit.add(c);
