@@ -1,32 +1,15 @@
 package com.struts.registration.domain;
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.validator.constraints.Email;
-
 @Entity
-@Table(name="USER")
-@TypeDef(typeClass=HobbyTypeState.class, name="hobby")
+@Table(name="USERS")
 public class User extends AbstractDomain implements Identifiable, Auditable {
     private static final long serialVersionUID = 1L;
 
@@ -34,48 +17,61 @@ public class User extends AbstractDomain implements Identifiable, Auditable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID")
     private Long id;
+
     @Column(name = "UUID", nullable = false, length = 36, unique = true)
     private String uuid;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="CREATEDDATE")
     private Date createdDate;
+
     @Column(name="CREATEDBY", length=50)
     private String createdBy;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="LASTUPDATED")
     private Date lastUpdated;
+
     @Column(name="LASTUPDATEDBY")
     private String lastUpdatedBy;
 
     @Column(name = "USERNAME", nullable = false, length = 50, unique = true)
     private String username;
+
     @Column(name="PASSWORD")
     @NotNull
     private String password;
+
     @Column(name = "EMAIL", length = 100)
-    @Email
+//    @Email
     private String email;
+
     @Column(name = "BDATE")
     @Type(type = "date")
     private Date birthdate;
+
     @Column(name="GENDER")
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
     @Column(name="MARITALSTATUS")
     @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
-    @Type(type="hobby")
-    @ElementCollection(fetch=FetchType.LAZY)
-    @JoinTable(
-            name="HOBBYTYPE", // ref table.
-            joinColumns = { @JoinColumn(name="USER_ID") }
+
+    @ElementCollection(fetch = FetchType.LAZY, targetClass = HobbyType.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "HOBBYTYPE",
+            joinColumns = @JoinColumn(name = "USER_ID")
     )
-    @Column(name="HOBBYTYPE_NAME")
+    @Column(name = "HOBBYTYPE_NAME")
     private Set<HobbyType> hobbyTypes = new HashSet<HobbyType>();
+
     // TODO
     // private CLOB document;
     @Column(name="COMMENT")
     private String comment;
+
     @Column(name="DOCUMENTPATH")
     private String documentPath;
 
