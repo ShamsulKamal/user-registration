@@ -12,7 +12,7 @@
 
     <properties>
         <hibernate.version>5.4.32.Final</hibernate.version>
-        <hibernate.validator.version>6.0.22.Final</hibernate.validator.version>
+        <hibernate.validator.version>6.2.0.Final</hibernate.validator.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
     </properties>
 
